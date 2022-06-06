@@ -13,18 +13,18 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\59899\\Desktop\\SistemasOperativos_Obligatorio\\SistemasOperativos_Obligatorio\\SistemasOperativos_Obligatorio.csproj",
+      "projectUniqueName": "c:\\Users\\59899\\Desktop\\Obligatorio_SistemasOperativos\\SistemasOperativos_Obligatorio\\SistemasOperativos_Obligatorio.csproj",
       "projectName": "SistemasOperativos_Obligatorio",
-      "projectPath": "C:\\Users\\59899\\Desktop\\SistemasOperativos_Obligatorio\\SistemasOperativos_Obligatorio\\SistemasOperativos_Obligatorio.csproj",
+      "projectPath": "c:\\Users\\59899\\Desktop\\Obligatorio_SistemasOperativos\\SistemasOperativos_Obligatorio\\SistemasOperativos_Obligatorio.csproj",
       "packagesPath": "C:\\Users\\59899\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\59899\\Desktop\\SistemasOperativos_Obligatorio\\SistemasOperativos_Obligatorio\\obj\\",
+      "outputPath": "c:\\Users\\59899\\Desktop\\Obligatorio_SistemasOperativos\\SistemasOperativos_Obligatorio\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\59899\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net5.0-windows7.0"
+        "net5.0-windows"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
