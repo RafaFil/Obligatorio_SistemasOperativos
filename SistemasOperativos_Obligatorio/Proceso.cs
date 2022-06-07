@@ -10,7 +10,6 @@ namespace SistemasOperativos_Obligatorio
         private int duracionEs;
         private Estado estado;
         private CPU cpu;
- 
 
 
         public Proceso(string nombre, bool esDeSo){

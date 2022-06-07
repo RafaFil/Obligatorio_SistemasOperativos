@@ -7,13 +7,13 @@ namespace SistemasOperativos_Obligatorio
 		private int velocidad;
 		private bool procesosActivo;
 
-		public CPU(string id){
+		public CPU(int id){
 			this.id = id;
-			this.procesoActivo = false;
+			this.procesosActivo = false;
 			this.velocidad = 1;
         }
 
-		public stirng Id{
+		public int Id{
             get{
 				return this.id;
             }
