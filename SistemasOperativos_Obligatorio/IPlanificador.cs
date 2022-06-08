@@ -4,7 +4,7 @@ namespace SistemasOperativos_Obligatorio
 {
     public interface IPlanificador{
         
-        PriorityQueue<Proceso, int> cola;
+        PriorityQueue<Proceso, int> Cola { get; }
 
     }
 }
