@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\59899\\Desktop\\Obligatorio_SistemasOperativos\\SistemasOperativos_Obligatorio\\SistemasOperativos_Obligatorio.csproj",
+      "projectUniqueName": "C:\\Users\\59899\\OneDrive - Universidad Católica del Uruguay\\SISTEMAS OPERATIVOS\\OBLIGATORIO\\Obligatorio_SistemasOperativos\\SistemasOperativos_Obligatorio\\SistemasOperativos_Obligatorio.csproj",
       "projectName": "SistemasOperativos_Obligatorio",
-      "projectPath": "C:\\Users\\59899\\Desktop\\Obligatorio_SistemasOperativos\\SistemasOperativos_Obligatorio\\SistemasOperativos_Obligatorio.csproj",
+      "projectPath": "C:\\Users\\59899\\OneDrive - Universidad Católica del Uruguay\\SISTEMAS OPERATIVOS\\OBLIGATORIO\\Obligatorio_SistemasOperativos\\SistemasOperativos_Obligatorio\\SistemasOperativos_Obligatorio.csproj",
       "packagesPath": "C:\\Users\\59899\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\59899\\Desktop\\Obligatorio_SistemasOperativos\\SistemasOperativos_Obligatorio\\obj\\",
+      "outputPath": "C:\\Users\\59899\\OneDrive - Universidad Católica del Uruguay\\SISTEMAS OPERATIVOS\\OBLIGATORIO\\Obligatorio_SistemasOperativos\\SistemasOperativos_Obligatorio\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\59899\\AppData\\Roaming\\NuGet\\NuGet.Config",

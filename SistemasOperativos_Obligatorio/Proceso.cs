@@ -39,7 +39,8 @@ namespace SistemasOperativos_Obligatorio
         {
             enEjecucion,
             listo,
-            bloqueado
+            bloqueado,
+            bloqueadoPorUsuario
         }
 
 
