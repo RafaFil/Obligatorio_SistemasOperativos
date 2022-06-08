@@ -1,3 +1,10 @@
 /SistemasOperativos_Obligatorio/bin
 /SistemasOperativos_Obligatorio/obj
 /.vs
+SistemasOperativos_Obligatorio/obj/project.assets.json
+SistemasOperativos_Obligatorio/obj/project.nuget.cache
+SistemasOperativos_Obligatorio/obj/SistemasOperativos_Obligatorio.csproj.nuget.dgspec.json
+SistemasOperativos_Obligatorio/obj/SistemasOperativos_Obligatorio.csproj.nuget.g.props
+SistemasOperativos_Obligatorio/obj/Debug/net6.0-windows/SistemasOperativos_Obligatorio.AssemblyInfo.cs
+SistemasOperativos_Obligatorio/obj/Debug/net6.0-windows/SistemasOperativos_Obligatorio.assets.cache
+SistemasOperativos_Obligatorio/obj/Debug/net6.0-windows/SistemasOperativos_Obligatorio.GeneratedMSBuildEditorConfig.editorconfig
