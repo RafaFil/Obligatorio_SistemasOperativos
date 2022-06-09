@@ -19,5 +19,10 @@ namespace SistemasOperativos_Obligatorio
 
         // Constructor PlantillaProceso
         // CreateProcess
+
+        public override string ToString()
+        {
+            return $"{nombre} ({(esDeSo ? "SO" : "USER")}) - {duracionCPU} | {duracionES} | {intervaloEs}";
+        }
     }
 }

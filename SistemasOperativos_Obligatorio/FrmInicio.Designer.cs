@@ -40,20 +40,26 @@
             this.numCantidadProcesos = new System.Windows.Forms.NumericUpDown();
             this.cbxPlantillaProceso = new System.Windows.Forms.ComboBox();
             this.grpCPUs = new System.Windows.Forms.GroupBox();
+            this.btnAgregarCPU = new System.Windows.Forms.Button();
             this.txtVelocidadCPU = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.lblVelocidadCPU = new System.Windows.Forms.Label();
             this.lblCantidadCPUs = new System.Windows.Forms.Label();
             this.numCantidadCPUs = new System.Windows.Forms.NumericUpDown();
             this.tckVelocidadCPU = new System.Windows.Forms.TrackBar();
             this.btnIniciarSimulacion = new System.Windows.Forms.Button();
             this.btnLimpiarSimulacion = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.lblProcesosIngresados = new System.Windows.Forms.Label();
+            this.lblCPUsIngresados = new System.Windows.Forms.Label();
             this.grpAgregarProcesos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tckPrioridadProceso)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCantidadProcesos)).BeginInit();
             this.grpCPUs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCantidadCPUs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tckVelocidadCPU)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // grpAgregarProcesos
@@ -147,6 +153,7 @@
             this.btnCrearPlantilla.TabIndex = 3;
             this.btnCrearPlantilla.Text = "Crear plantilla";
             this.btnCrearPlantilla.UseVisualStyleBackColor = true;
+            this.btnCrearPlantilla.Click += new System.EventHandler(this.btnCrearPlantilla_Click);
             // 
             // numCantidadProcesos
             // 
@@ -165,8 +172,8 @@
             // 
             // grpCPUs
             // 
+            this.grpCPUs.Controls.Add(this.btnAgregarCPU);
             this.grpCPUs.Controls.Add(this.txtVelocidadCPU);
-            this.grpCPUs.Controls.Add(this.button1);
             this.grpCPUs.Controls.Add(this.lblVelocidadCPU);
             this.grpCPUs.Controls.Add(this.lblCantidadCPUs);
             this.grpCPUs.Controls.Add(this.numCantidadCPUs);
@@ -178,6 +185,15 @@
             this.grpCPUs.TabStop = false;
             this.grpCPUs.Text = "Agregar procesadores";
             // 
+            // btnAgregarCPU
+            // 
+            this.btnAgregarCPU.Location = new System.Drawing.Point(317, 127);
+            this.btnAgregarCPU.Name = "btnAgregarCPU";
+            this.btnAgregarCPU.Size = new System.Drawing.Size(92, 23);
+            this.btnAgregarCPU.TabIndex = 8;
+            this.btnAgregarCPU.Text = "Agregar";
+            this.btnAgregarCPU.UseVisualStyleBackColor = true;
+            // 
             // txtVelocidadCPU
             // 
             this.txtVelocidadCPU.Location = new System.Drawing.Point(206, 27);
@@ -185,15 +201,6 @@
             this.txtVelocidadCPU.ReadOnly = true;
             this.txtVelocidadCPU.Size = new System.Drawing.Size(59, 23);
             this.txtVelocidadCPU.TabIndex = 8;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(317, 60);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(92, 23);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Agregar";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // lblVelocidadCPU
             // 
@@ -249,11 +256,57 @@
             this.btnLimpiarSimulacion.Text = "Limpiar";
             this.btnLimpiarSimulacion.UseVisualStyleBackColor = false;
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(12, 207);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowTemplate.Height = 25;
+            this.dataGridView1.Size = new System.Drawing.Size(607, 285);
+            this.dataGridView1.TabIndex = 4;
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.AllowUserToDeleteRows = false;
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(639, 207);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.ReadOnly = true;
+            this.dataGridView2.RowTemplate.Height = 25;
+            this.dataGridView2.Size = new System.Drawing.Size(209, 223);
+            this.dataGridView2.TabIndex = 5;
+            // 
+            // lblProcesosIngresados
+            // 
+            this.lblProcesosIngresados.AutoSize = true;
+            this.lblProcesosIngresados.Location = new System.Drawing.Point(12, 189);
+            this.lblProcesosIngresados.Name = "lblProcesosIngresados";
+            this.lblProcesosIngresados.Size = new System.Drawing.Size(117, 15);
+            this.lblProcesosIngresados.TabIndex = 6;
+            this.lblProcesosIngresados.Text = "Procesos ingresados:";
+            // 
+            // lblCPUsIngresados
+            // 
+            this.lblCPUsIngresados.AutoSize = true;
+            this.lblCPUsIngresados.Location = new System.Drawing.Point(639, 189);
+            this.lblCPUsIngresados.Name = "lblCPUsIngresados";
+            this.lblCPUsIngresados.Size = new System.Drawing.Size(98, 15);
+            this.lblCPUsIngresados.TabIndex = 7;
+            this.lblCPUsIngresados.Text = "CPUs ingresados:";
+            // 
             // FrmInicio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(860, 504);
+            this.Controls.Add(this.lblCPUsIngresados);
+            this.Controls.Add(this.lblProcesosIngresados);
+            this.Controls.Add(this.dataGridView2);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.btnLimpiarSimulacion);
             this.Controls.Add(this.btnIniciarSimulacion);
             this.Controls.Add(this.grpCPUs);
@@ -268,7 +321,10 @@
             this.grpCPUs.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCantidadCPUs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tckVelocidadCPU)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -286,7 +342,6 @@
         private System.Windows.Forms.ComboBox cbxPlantillaProceso;
         private System.Windows.Forms.GroupBox grpCPUs;
         private System.Windows.Forms.TextBox txtPrioridadProceso;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label lblVelocidadCPU;
         private System.Windows.Forms.Label lblCantidadCPUs;
         private System.Windows.Forms.NumericUpDown numCantidadCPUs;
@@ -294,5 +349,10 @@
         private System.Windows.Forms.Button btnIniciarSimulacion;
         private System.Windows.Forms.Button btnLimpiarSimulacion;
         private System.Windows.Forms.TextBox txtVelocidadCPU;
+        private System.Windows.Forms.Button btnAgregarCPU;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.Label lblProcesosIngresados;
+        private System.Windows.Forms.Label lblCPUsIngresados;
     }
 }
