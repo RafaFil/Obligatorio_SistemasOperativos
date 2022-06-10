@@ -60,6 +60,7 @@ namespace SistemasOperativos_Obligatorio
 
         private void btnCargaMasivaProcesos_Click(object sender, EventArgs e)
         {
+            openFileDialog1.Filter = "csv files (*.csv)|*.csv";
             openFileDialog1.ShowDialog();
             string ruta = openFileDialog1.FileName;
             procesosIngresados.AddRange(CargaMasivaDatos.CargarProcesos(ruta));
