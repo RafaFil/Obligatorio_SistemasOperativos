@@ -48,5 +48,18 @@ namespace SistemasOperativos_Obligatorio
             plantillasProcesosDisponibles.Sort((a, b) => a.nombre.CompareTo(b.nombre));
             cbxPlantillaProceso.Items.AddRange(plantillasProcesosDisponibles.ToArray());
         }
+
+        private void btnCargaMasivaProcesos_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.ShowDialog();
+            string ruta = openFileDialog1.FileName;
+            procesosIngresados.AddRange(CargaMasivaDatos.CargarProcesos(ruta));
+            MessageBox.Show(ruta);
+        }
+
+        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        {
+
+        }
     }
 }
