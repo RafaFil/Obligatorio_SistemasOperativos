@@ -52,6 +52,7 @@
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.lblProcesosIngresados = new System.Windows.Forms.Label();
             this.lblCPUsIngresados = new System.Windows.Forms.Label();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.grpAgregarProcesos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tckPrioridadProceso)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCantidadProcesos)).BeginInit();
@@ -135,6 +136,7 @@
             this.btnCargaMasivaProcesos.TabIndex = 4;
             this.btnCargaMasivaProcesos.Text = "Carga masiva";
             this.btnCargaMasivaProcesos.UseVisualStyleBackColor = true;
+            this.btnCargaMasivaProcesos.Click += new System.EventHandler(this.btnCargaMasivaProcesos_Click);
             // 
             // lblPlantillaProceso
             // 
@@ -298,6 +300,11 @@
             this.lblCPUsIngresados.TabIndex = 7;
             this.lblCPUsIngresados.Text = "CPUs ingresados:";
             // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
+            // 
             // FrmInicio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -354,5 +361,6 @@
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.Label lblProcesosIngresados;
         private System.Windows.Forms.Label lblCPUsIngresados;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }

@@ -56,6 +56,11 @@ namespace SistemasOperativos_Obligatorio
             bloqueadoPorUsuario
         }
 
+        public override string ToString()
+        {
+            return $"{nombre} ({(esDeSo ? "SO" : "USER")}) - {duracionCPU} | {duracionEs} | {intervaloES}";
+        }
+
     }
 
 }
