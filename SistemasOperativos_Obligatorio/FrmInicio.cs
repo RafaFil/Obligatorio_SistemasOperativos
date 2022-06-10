@@ -23,6 +23,8 @@ namespace SistemasOperativos_Obligatorio
             plantillasProcesosDisponibles = new List<PlantillaProceso>();
             procesosIngresados = new List<Proceso>();
             cpusDisponibles = new List<CPU>();
+            txtPrioridadProceso.Text = tckPrioridadProceso.Value.ToString();
+            numCantidadProcesos.Value = 1;
         }
 
         private void btnCrearPlantilla_Click(object sender, EventArgs e)
@@ -49,17 +51,42 @@ namespace SistemasOperativos_Obligatorio
             cbxPlantillaProceso.Items.AddRange(plantillasProcesosDisponibles.ToArray());
         }
 
+        private void actualizarProcesosIngresados()
+        {
+            grdProcesos.Rows.Clear();
+            procesosIngresados.ForEach(p => grdProcesos.Rows.Add(p.id, p.nombre,
+                p.duracionCPU, p.duracionEs, p.intervaloES, p.prioridad, p.esDeSo));
+        }
+
         private void btnCargaMasivaProcesos_Click(object sender, EventArgs e)
         {
             openFileDialog1.ShowDialog();
             string ruta = openFileDialog1.FileName;
             procesosIngresados.AddRange(CargaMasivaDatos.CargarProcesos(ruta));
             MessageBox.Show(ruta);
+            actualizarProcesosIngresados();
         }
 
-        private void openFileDialog1_FileOk(object sender, CancelEventArgs e)
+        private void btnAgregarProceso_Click(object sender, EventArgs e)
         {
+            PlantillaProceso plantilla = (PlantillaProceso) cbxPlantillaProceso.SelectedItem;
+            for (int i = 0; i < numCantidadProcesos.Value; i++)
+            {
+                Proceso proceso = new Proceso(plantilla);
+                proceso.Prioridad = tckPrioridadProceso.Value;
+                procesosIngresados.Add(proceso);
+            }
+            actualizarProcesosIngresados();
+        }
 
+        private void tckPrioridadProceso_ValueChanged(object sender, EventArgs e)
+        {
+            txtPrioridadProceso.Text = tckPrioridadProceso.Value.ToString();
+        }
+
+        private void cbxPlantillaProceso_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnAgregarProceso.Enabled = cbxPlantillaProceso.SelectedIndex != -1;
         }
     }
 }

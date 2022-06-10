@@ -48,19 +48,26 @@
             this.tckVelocidadCPU = new System.Windows.Forms.TrackBar();
             this.btnIniciarSimulacion = new System.Windows.Forms.Button();
             this.btnLimpiarSimulacion = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.grdCPUs = new System.Windows.Forms.DataGridView();
             this.lblProcesosIngresados = new System.Windows.Forms.Label();
             this.lblCPUsIngresados = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.grdProcesos = new System.Windows.Forms.DataGridView();
+            this.colIDProceso = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colNombreProceso = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDuracionCPU = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDuracionES = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colIntervaloES = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPrioridad = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEsDeSO = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.grpAgregarProcesos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tckPrioridadProceso)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCantidadProcesos)).BeginInit();
             this.grpCPUs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCantidadCPUs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tckVelocidadCPU)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdCPUs)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdProcesos)).BeginInit();
             this.SuspendLayout();
             // 
             // grpAgregarProcesos
@@ -109,15 +116,18 @@
             this.tckPrioridadProceso.TabIndex = 6;
             this.tckPrioridadProceso.TickFrequency = 10;
             this.tckPrioridadProceso.Value = 1;
+            this.tckPrioridadProceso.ValueChanged += new System.EventHandler(this.tckPrioridadProceso_ValueChanged);
             // 
             // btnAgregarProceso
             // 
+            this.btnAgregarProceso.Enabled = false;
             this.btnAgregarProceso.Location = new System.Drawing.Point(316, 127);
             this.btnAgregarProceso.Name = "btnAgregarProceso";
             this.btnAgregarProceso.Size = new System.Drawing.Size(92, 23);
             this.btnAgregarProceso.TabIndex = 5;
             this.btnAgregarProceso.Text = "Agregar";
             this.btnAgregarProceso.UseVisualStyleBackColor = true;
+            this.btnAgregarProceso.Click += new System.EventHandler(this.btnAgregarProceso_Click);
             // 
             // lblCantidadProcesos
             // 
@@ -160,9 +170,19 @@
             // numCantidadProcesos
             // 
             this.numCantidadProcesos.Location = new System.Drawing.Point(6, 105);
+            this.numCantidadProcesos.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numCantidadProcesos.Name = "numCantidadProcesos";
             this.numCantidadProcesos.Size = new System.Drawing.Size(79, 23);
             this.numCantidadProcesos.TabIndex = 1;
+            this.numCantidadProcesos.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // cbxPlantillaProceso
             // 
@@ -171,6 +191,7 @@
             this.cbxPlantillaProceso.Name = "cbxPlantillaProceso";
             this.cbxPlantillaProceso.Size = new System.Drawing.Size(259, 23);
             this.cbxPlantillaProceso.TabIndex = 0;
+            this.cbxPlantillaProceso.SelectedIndexChanged += new System.EventHandler(this.cbxPlantillaProceso_SelectedIndexChanged);
             // 
             // grpCPUs
             // 
@@ -189,6 +210,7 @@
             // 
             // btnAgregarCPU
             // 
+            this.btnAgregarCPU.Enabled = false;
             this.btnAgregarCPU.Location = new System.Drawing.Point(317, 127);
             this.btnAgregarCPU.Name = "btnAgregarCPU";
             this.btnAgregarCPU.Size = new System.Drawing.Size(92, 23);
@@ -258,29 +280,17 @@
             this.btnLimpiarSimulacion.Text = "Limpiar";
             this.btnLimpiarSimulacion.UseVisualStyleBackColor = false;
             // 
-            // dataGridView1
+            // grdCPUs
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 207);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(607, 285);
-            this.dataGridView1.TabIndex = 4;
-            // 
-            // dataGridView2
-            // 
-            this.dataGridView2.AllowUserToAddRows = false;
-            this.dataGridView2.AllowUserToDeleteRows = false;
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(639, 207);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.ReadOnly = true;
-            this.dataGridView2.RowTemplate.Height = 25;
-            this.dataGridView2.Size = new System.Drawing.Size(209, 223);
-            this.dataGridView2.TabIndex = 5;
+            this.grdCPUs.AllowUserToAddRows = false;
+            this.grdCPUs.AllowUserToDeleteRows = false;
+            this.grdCPUs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grdCPUs.Location = new System.Drawing.Point(639, 207);
+            this.grdCPUs.Name = "grdCPUs";
+            this.grdCPUs.ReadOnly = true;
+            this.grdCPUs.RowTemplate.Height = 25;
+            this.grdCPUs.Size = new System.Drawing.Size(209, 223);
+            this.grdCPUs.TabIndex = 5;
             // 
             // lblProcesosIngresados
             // 
@@ -303,7 +313,74 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            this.openFileDialog1.FileOk += new System.ComponentModel.CancelEventHandler(this.openFileDialog1_FileOk);
+            // 
+            // grdProcesos
+            // 
+            this.grdProcesos.AllowUserToAddRows = false;
+            this.grdProcesos.AllowUserToDeleteRows = false;
+            this.grdProcesos.AllowUserToResizeRows = false;
+            this.grdProcesos.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.grdProcesos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grdProcesos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colIDProceso,
+            this.colNombreProceso,
+            this.colDuracionCPU,
+            this.colDuracionES,
+            this.colIntervaloES,
+            this.colPrioridad,
+            this.colEsDeSO});
+            this.grdProcesos.Location = new System.Drawing.Point(12, 207);
+            this.grdProcesos.Name = "grdProcesos";
+            this.grdProcesos.ReadOnly = true;
+            this.grdProcesos.RowHeadersVisible = false;
+            this.grdProcesos.RowTemplate.Height = 25;
+            this.grdProcesos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.grdProcesos.Size = new System.Drawing.Size(607, 285);
+            this.grdProcesos.TabIndex = 4;
+            // 
+            // colIDProceso
+            // 
+            this.colIDProceso.FillWeight = 20F;
+            this.colIDProceso.HeaderText = "ID";
+            this.colIDProceso.Name = "colIDProceso";
+            this.colIDProceso.ReadOnly = true;
+            // 
+            // colNombreProceso
+            // 
+            this.colNombreProceso.HeaderText = "Nombre";
+            this.colNombreProceso.Name = "colNombreProceso";
+            this.colNombreProceso.ReadOnly = true;
+            // 
+            // colDuracionCPU
+            // 
+            this.colDuracionCPU.HeaderText = "Duración CPU";
+            this.colDuracionCPU.Name = "colDuracionCPU";
+            this.colDuracionCPU.ReadOnly = true;
+            // 
+            // colDuracionES
+            // 
+            this.colDuracionES.HeaderText = "Duración E/S";
+            this.colDuracionES.Name = "colDuracionES";
+            this.colDuracionES.ReadOnly = true;
+            // 
+            // colIntervaloES
+            // 
+            this.colIntervaloES.HeaderText = "Intervalo E/S";
+            this.colIntervaloES.Name = "colIntervaloES";
+            this.colIntervaloES.ReadOnly = true;
+            // 
+            // colPrioridad
+            // 
+            this.colPrioridad.HeaderText = "Prioridad";
+            this.colPrioridad.Name = "colPrioridad";
+            this.colPrioridad.ReadOnly = true;
+            // 
+            // colEsDeSO
+            // 
+            this.colEsDeSO.FillWeight = 30F;
+            this.colEsDeSO.HeaderText = "SO";
+            this.colEsDeSO.Name = "colEsDeSO";
+            this.colEsDeSO.ReadOnly = true;
             // 
             // FrmInicio
             // 
@@ -312,8 +389,8 @@
             this.ClientSize = new System.Drawing.Size(860, 504);
             this.Controls.Add(this.lblCPUsIngresados);
             this.Controls.Add(this.lblProcesosIngresados);
-            this.Controls.Add(this.dataGridView2);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.grdCPUs);
+            this.Controls.Add(this.grdProcesos);
             this.Controls.Add(this.btnLimpiarSimulacion);
             this.Controls.Add(this.btnIniciarSimulacion);
             this.Controls.Add(this.grpCPUs);
@@ -328,8 +405,8 @@
             this.grpCPUs.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCantidadCPUs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tckVelocidadCPU)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdCPUs)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grdProcesos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -357,10 +434,17 @@
         private System.Windows.Forms.Button btnLimpiarSimulacion;
         private System.Windows.Forms.TextBox txtVelocidadCPU;
         private System.Windows.Forms.Button btnAgregarCPU;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridView grdCPUs;
         private System.Windows.Forms.Label lblProcesosIngresados;
         private System.Windows.Forms.Label lblCPUsIngresados;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.DataGridView grdProcesos;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colIDProceso;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNombreProceso;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDuracionCPU;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDuracionES;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colIntervaloES;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPrioridad;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colEsDeSO;
     }
 }

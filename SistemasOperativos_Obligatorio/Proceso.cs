@@ -4,16 +4,16 @@ namespace SistemasOperativos_Obligatorio
     public class Proceso {
 
         private static int ProxId {get; set; }
-        private int id; 
-        private string nombre;
-        private bool esDeSo;
-        private int prioridad;
+        public int id { get; }
+        public string nombre;
+        public bool esDeSo;
+        public int prioridad;
 
-        private int duracionCPU;
-        private int intervaloES;
-        private int duracionEs;
-        private Estado estado;
-        private CPU cpu;
+        public int duracionCPU;
+        public int intervaloES;
+        public int duracionEs;
+        public Estado estado;
+        public CPU cpu;
 
 
         public Proceso (PlantillaProceso plantilla){
