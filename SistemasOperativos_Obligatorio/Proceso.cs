@@ -1,6 +1,7 @@
+using System;
+
 namespace SistemasOperativos_Obligatorio
 {
-
     public class Proceso {
 
         private static int ProxId {get; set; }
@@ -12,6 +13,7 @@ namespace SistemasOperativos_Obligatorio
         public int duracionCPU;
         public int intervaloES;
         public int duracionEs;
+        public double tiempoTranscurrido;
         public Estado estado;
         public CPU cpu;
 
@@ -48,17 +50,38 @@ namespace SistemasOperativos_Obligatorio
             }
         }
 
+        public int PorcentajeCompletado
+        {
+            get
+            {
+                if (tiempoTranscurrido == 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    return (int) (duracionCPU / tiempoTranscurrido) * 100;
+                }
+            }
+        }
+
+        public void IncrementarPrioridad()
+        {
+            prioridad = Math.Max(1, prioridad - 1);
+        }
+
         public enum Estado
         {
             enEjecucion,
             listo,
             bloqueado,
-            bloqueadoPorUsuario
+            bloqueadoPorUsuario,
+            finalizado
         }
 
         public override string ToString()
         {
-            return $"{nombre} ({(esDeSo ? "SO" : "USER")}) - {duracionCPU} | {duracionEs} | {intervaloES}";
+            return $"#{id} {nombre} ({(esDeSo ? "SO" : "USER")}) - {duracionCPU} | {duracionEs} | {intervaloES}";
         }
 
     }

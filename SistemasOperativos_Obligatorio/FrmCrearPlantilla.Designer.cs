@@ -52,25 +52,28 @@
             this.chkUsarBase.Name = "chkUsarBase";
             this.chkUsarBase.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkUsarBase.Size = new System.Drawing.Size(179, 19);
-            this.chkUsarBase.TabIndex = 0;
+            this.chkUsarBase.TabIndex = 6;
             this.chkUsarBase.Text = "Usar otra plantilla como base";
             this.chkUsarBase.UseVisualStyleBackColor = true;
+            this.chkUsarBase.CheckedChanged += new System.EventHandler(this.chkUsarBase_CheckedChanged);
             // 
             // cbxPlantillasCreadas
             // 
+            this.cbxPlantillasCreadas.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxPlantillasCreadas.Enabled = false;
             this.cbxPlantillasCreadas.FormattingEnabled = true;
             this.cbxPlantillasCreadas.Location = new System.Drawing.Point(267, 12);
             this.cbxPlantillasCreadas.Name = "cbxPlantillasCreadas";
             this.cbxPlantillasCreadas.Size = new System.Drawing.Size(190, 23);
-            this.cbxPlantillasCreadas.TabIndex = 1;
+            this.cbxPlantillasCreadas.TabIndex = 7;
+            this.cbxPlantillasCreadas.SelectedIndexChanged += new System.EventHandler(this.cbxPlantillasCreadas_SelectedIndexChanged);
             // 
             // txtNombre
             // 
             this.txtNombre.Location = new System.Drawing.Point(12, 90);
             this.txtNombre.Name = "txtNombre";
             this.txtNombre.Size = new System.Drawing.Size(445, 23);
-            this.txtNombre.TabIndex = 2;
+            this.txtNombre.TabIndex = 0;
             // 
             // numDuracionCPU
             // 
@@ -82,7 +85,7 @@
             0});
             this.numDuracionCPU.Name = "numDuracionCPU";
             this.numDuracionCPU.Size = new System.Drawing.Size(110, 23);
-            this.numDuracionCPU.TabIndex = 3;
+            this.numDuracionCPU.TabIndex = 1;
             this.numDuracionCPU.Value = new decimal(new int[] {
             1,
             0,
@@ -101,7 +104,7 @@
             0});
             this.numIntervaloES.Name = "numIntervaloES";
             this.numIntervaloES.Size = new System.Drawing.Size(120, 23);
-            this.numIntervaloES.TabIndex = 4;
+            this.numIntervaloES.TabIndex = 3;
             this.numIntervaloES.Value = new decimal(new int[] {
             1,
             0,
@@ -113,7 +116,8 @@
             this.numDuracionES.Location = new System.Drawing.Point(172, 151);
             this.numDuracionES.Name = "numDuracionES";
             this.numDuracionES.Size = new System.Drawing.Size(121, 23);
-            this.numDuracionES.TabIndex = 5;
+            this.numDuracionES.TabIndex = 2;
+            this.numDuracionES.ValueChanged += new System.EventHandler(this.numDuracionES_ValueChanged);
             // 
             // lblNombre
             // 
@@ -158,7 +162,7 @@
             this.chkEsDeSO.Name = "chkEsDeSO";
             this.chkEsDeSO.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkEsDeSO.Size = new System.Drawing.Size(197, 19);
-            this.chkEsDeSO.TabIndex = 10;
+            this.chkEsDeSO.TabIndex = 4;
             this.chkEsDeSO.Text = "Es proceso del sistema operativo";
             this.chkEsDeSO.UseVisualStyleBackColor = true;
             // 
@@ -168,13 +172,14 @@
             this.btnCrear.Location = new System.Drawing.Point(357, 228);
             this.btnCrear.Name = "btnCrear";
             this.btnCrear.Size = new System.Drawing.Size(100, 33);
-            this.btnCrear.TabIndex = 11;
+            this.btnCrear.TabIndex = 5;
             this.btnCrear.Text = "Crear";
             this.btnCrear.UseVisualStyleBackColor = false;
             this.btnCrear.Click += new System.EventHandler(this.btnCrear_Click);
             // 
             // FrmCrearPlantilla
             // 
+            this.AcceptButton = this.btnCrear;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(469, 273);

@@ -4,13 +4,17 @@ namespace SistemasOperativos_Obligatorio
 {
 	public class CPU{
 		private int id;
-		private int velocidad;
-		private bool procesosActivo;
+		private static int ProxId = 0;
+		private IPlanificador planificador;
+		public Proceso? ProcesoActivo { get; set; }
+		public double Velocidad { get; set; }
 
-		public CPU(int id){
-			this.id = id;
-			this.procesosActivo = false;
-			this.velocidad = 1;
+		public CPU(double velocidad)
+		{
+			this.id = CPU.ProxId;
+			CPU.ProxId++;
+			this.ProcesoActivo = null;
+			this.Velocidad = velocidad;
         }
 
 		public int Id{
@@ -18,15 +22,10 @@ namespace SistemasOperativos_Obligatorio
 				return this.id;
             }
         }
-		
-		public bool ProcesoActivo{
-            get{
-				return this.ProcesoActivo;
-            }
-            set{
-				this.ProcesoActivo = value;
-            }
-        }
 
-	}
+        public override string ToString()
+        {
+            return $"CPU {Id} @ {Velocidad * 100}%";
+        }
+    }
 }

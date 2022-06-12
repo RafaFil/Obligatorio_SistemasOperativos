@@ -14,11 +14,12 @@ namespace SistemasOperativos_Obligatorio
     {
         public PlantillaProceso? plantillaCreada;
 
-        public FrmCrearPlantilla()
+        public FrmCrearPlantilla(List<PlantillaProceso> plantillas)
         {
             InitializeComponent();
 
             plantillaCreada = null;
+            cbxPlantillasCreadas.Items.AddRange(plantillas.ToArray());
         }
 
         private void btnCrear_Click(object sender, EventArgs e)
@@ -30,8 +31,20 @@ namespace SistemasOperativos_Obligatorio
                 return;
             }
 
-            plantillaCreada = new PlantillaProceso(txtNombre.Text, (int) numDuracionCPU.Value,
-                (int) numDuracionES.Value, (int) numIntervaloES.Value, chkEsDeSO.Checked);
+            if (numIntervaloES.Enabled && numIntervaloES.Value > numDuracionCPU.Value)
+            {
+                MessageBox.Show("El intervalo entre operaciones E/S es mayor que el tiempo que "
+                    + "el proceso ocupará el CPU. Deshabilite las operaciones E/S reduciendo su "
+                    + "duración a 0, o incremente la duración de CPU", "Datos inválidos",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            plantillaCreada = new PlantillaProceso(txtNombre.Text,
+                (int) numDuracionCPU.Value,
+                (int) numDuracionES.Value,
+                numIntervaloES.Enabled ? (int)numIntervaloES.Value : 0,
+                chkEsDeSO.Checked);
 
             MessageBox.Show("Plantilla creada exitosamente.", "Creada",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -42,6 +55,26 @@ namespace SistemasOperativos_Obligatorio
         private void numDuracionCPU_ValueChanged(object sender, EventArgs e)
         {
             numIntervaloES.Maximum = numDuracionCPU.Value;
+        }
+
+        private void chkUsarBase_CheckedChanged(object sender, EventArgs e)
+        {
+            cbxPlantillasCreadas.Enabled = chkUsarBase.Checked;
+        }
+
+        private void cbxPlantillasCreadas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PlantillaProceso pp = (PlantillaProceso) cbxPlantillasCreadas.SelectedItem;
+            txtNombre.Text = pp.nombre;
+            numDuracionCPU.Value = pp.duracionCPU;
+            numDuracionES.Value = pp.duracionES;
+            numIntervaloES.Value = pp.intervaloEs;
+            chkEsDeSO.Checked = pp.esDeSo;
+        }
+
+        private void numDuracionES_ValueChanged(object sender, EventArgs e)
+        {
+            numIntervaloES.Enabled = numDuracionES.Value > 0;
         }
     }
 }

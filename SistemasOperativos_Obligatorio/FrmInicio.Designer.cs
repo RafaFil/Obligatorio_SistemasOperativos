@@ -49,6 +49,8 @@
             this.btnIniciarSimulacion = new System.Windows.Forms.Button();
             this.btnLimpiarSimulacion = new System.Windows.Forms.Button();
             this.grdCPUs = new System.Windows.Forms.DataGridView();
+            this.colIDCPU = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colVelocidad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblProcesosIngresados = new System.Windows.Forms.Label();
             this.lblCPUsIngresados = new System.Windows.Forms.Label();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -113,7 +115,7 @@
             this.tckPrioridadProceso.Minimum = 1;
             this.tckPrioridadProceso.Name = "tckPrioridadProceso";
             this.tckPrioridadProceso.Size = new System.Drawing.Size(136, 45);
-            this.tckPrioridadProceso.TabIndex = 6;
+            this.tckPrioridadProceso.TabIndex = 2;
             this.tckPrioridadProceso.TickFrequency = 10;
             this.tckPrioridadProceso.Value = 1;
             this.tckPrioridadProceso.ValueChanged += new System.EventHandler(this.tckPrioridadProceso_ValueChanged);
@@ -124,7 +126,7 @@
             this.btnAgregarProceso.Location = new System.Drawing.Point(316, 127);
             this.btnAgregarProceso.Name = "btnAgregarProceso";
             this.btnAgregarProceso.Size = new System.Drawing.Size(92, 23);
-            this.btnAgregarProceso.TabIndex = 5;
+            this.btnAgregarProceso.TabIndex = 3;
             this.btnAgregarProceso.Text = "Agregar";
             this.btnAgregarProceso.UseVisualStyleBackColor = true;
             this.btnAgregarProceso.Click += new System.EventHandler(this.btnAgregarProceso_Click);
@@ -143,7 +145,7 @@
             this.btnCargaMasivaProcesos.Location = new System.Drawing.Point(316, 48);
             this.btnCargaMasivaProcesos.Name = "btnCargaMasivaProcesos";
             this.btnCargaMasivaProcesos.Size = new System.Drawing.Size(92, 23);
-            this.btnCargaMasivaProcesos.TabIndex = 4;
+            this.btnCargaMasivaProcesos.TabIndex = 5;
             this.btnCargaMasivaProcesos.Text = "Carga masiva";
             this.btnCargaMasivaProcesos.UseVisualStyleBackColor = true;
             this.btnCargaMasivaProcesos.Click += new System.EventHandler(this.btnCargaMasivaProcesos_Click);
@@ -162,7 +164,7 @@
             this.btnCrearPlantilla.Location = new System.Drawing.Point(316, 19);
             this.btnCrearPlantilla.Name = "btnCrearPlantilla";
             this.btnCrearPlantilla.Size = new System.Drawing.Size(92, 23);
-            this.btnCrearPlantilla.TabIndex = 3;
+            this.btnCrearPlantilla.TabIndex = 4;
             this.btnCrearPlantilla.Text = "Crear plantilla";
             this.btnCrearPlantilla.UseVisualStyleBackColor = true;
             this.btnCrearPlantilla.Click += new System.EventHandler(this.btnCrearPlantilla_Click);
@@ -186,6 +188,7 @@
             // 
             // cbxPlantillaProceso
             // 
+            this.cbxPlantillaProceso.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbxPlantillaProceso.FormattingEnabled = true;
             this.cbxPlantillaProceso.Location = new System.Drawing.Point(6, 45);
             this.cbxPlantillaProceso.Name = "cbxPlantillaProceso";
@@ -210,13 +213,13 @@
             // 
             // btnAgregarCPU
             // 
-            this.btnAgregarCPU.Enabled = false;
             this.btnAgregarCPU.Location = new System.Drawing.Point(317, 127);
             this.btnAgregarCPU.Name = "btnAgregarCPU";
             this.btnAgregarCPU.Size = new System.Drawing.Size(92, 23);
-            this.btnAgregarCPU.TabIndex = 8;
+            this.btnAgregarCPU.TabIndex = 2;
             this.btnAgregarCPU.Text = "Agregar";
             this.btnAgregarCPU.UseVisualStyleBackColor = true;
+            this.btnAgregarCPU.Click += new System.EventHandler(this.btnAgregarCPU_Click);
             // 
             // txtVelocidadCPU
             // 
@@ -247,9 +250,19 @@
             // numCantidadCPUs
             // 
             this.numCantidadCPUs.Location = new System.Drawing.Point(6, 48);
+            this.numCantidadCPUs.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.numCantidadCPUs.Name = "numCantidadCPUs";
             this.numCantidadCPUs.Size = new System.Drawing.Size(79, 23);
-            this.numCantidadCPUs.TabIndex = 2;
+            this.numCantidadCPUs.TabIndex = 0;
+            this.numCantidadCPUs.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // tckVelocidadCPU
             // 
@@ -257,18 +270,21 @@
             this.tckVelocidadCPU.Maximum = 100;
             this.tckVelocidadCPU.Name = "tckVelocidadCPU";
             this.tckVelocidadCPU.Size = new System.Drawing.Size(136, 45);
-            this.tckVelocidadCPU.TabIndex = 0;
+            this.tckVelocidadCPU.TabIndex = 1;
             this.tckVelocidadCPU.TickFrequency = 10;
+            this.tckVelocidadCPU.ValueChanged += new System.EventHandler(this.tckVelocidadCPU_ValueChanged);
             // 
             // btnIniciarSimulacion
             // 
             this.btnIniciarSimulacion.BackColor = System.Drawing.Color.PaleGreen;
+            this.btnIniciarSimulacion.Enabled = false;
             this.btnIniciarSimulacion.Location = new System.Drawing.Point(748, 459);
             this.btnIniciarSimulacion.Name = "btnIniciarSimulacion";
             this.btnIniciarSimulacion.Size = new System.Drawing.Size(100, 33);
-            this.btnIniciarSimulacion.TabIndex = 2;
+            this.btnIniciarSimulacion.TabIndex = 1;
             this.btnIniciarSimulacion.Text = "Iniciar";
             this.btnIniciarSimulacion.UseVisualStyleBackColor = false;
+            this.btnIniciarSimulacion.Click += new System.EventHandler(this.btnIniciarSimulacion_Click);
             // 
             // btnLimpiarSimulacion
             // 
@@ -276,21 +292,43 @@
             this.btnLimpiarSimulacion.Location = new System.Drawing.Point(639, 459);
             this.btnLimpiarSimulacion.Name = "btnLimpiarSimulacion";
             this.btnLimpiarSimulacion.Size = new System.Drawing.Size(100, 33);
-            this.btnLimpiarSimulacion.TabIndex = 3;
+            this.btnLimpiarSimulacion.TabIndex = 0;
             this.btnLimpiarSimulacion.Text = "Limpiar";
             this.btnLimpiarSimulacion.UseVisualStyleBackColor = false;
+            this.btnLimpiarSimulacion.Click += new System.EventHandler(this.btnLimpiarSimulacion_Click);
             // 
             // grdCPUs
             // 
             this.grdCPUs.AllowUserToAddRows = false;
             this.grdCPUs.AllowUserToDeleteRows = false;
+            this.grdCPUs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.grdCPUs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grdCPUs.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colIDCPU,
+            this.colVelocidad});
             this.grdCPUs.Location = new System.Drawing.Point(639, 207);
             this.grdCPUs.Name = "grdCPUs";
             this.grdCPUs.ReadOnly = true;
+            this.grdCPUs.RowHeadersVisible = false;
             this.grdCPUs.RowTemplate.Height = 25;
+            this.grdCPUs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdCPUs.Size = new System.Drawing.Size(209, 223);
-            this.grdCPUs.TabIndex = 5;
+            this.grdCPUs.TabIndex = 3;
+            this.grdCPUs.TabStop = false;
+            // 
+            // colIDCPU
+            // 
+            this.colIDCPU.FillWeight = 25F;
+            this.colIDCPU.HeaderText = "ID";
+            this.colIDCPU.Name = "colIDCPU";
+            this.colIDCPU.ReadOnly = true;
+            // 
+            // colVelocidad
+            // 
+            this.colVelocidad.FillWeight = 75F;
+            this.colVelocidad.HeaderText = "Velocidad relativa";
+            this.colVelocidad.Name = "colVelocidad";
+            this.colVelocidad.ReadOnly = true;
             // 
             // lblProcesosIngresados
             // 
@@ -337,6 +375,7 @@
             this.grdProcesos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdProcesos.Size = new System.Drawing.Size(607, 285);
             this.grdProcesos.TabIndex = 4;
+            this.grdProcesos.TabStop = false;
             // 
             // colIDProceso
             // 
@@ -446,5 +485,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colIntervaloES;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPrioridad;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colEsDeSO;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colIDCPU;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colVelocidad;
     }
 }
