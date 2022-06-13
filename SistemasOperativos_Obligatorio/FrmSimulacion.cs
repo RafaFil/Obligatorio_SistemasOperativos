@@ -23,10 +23,26 @@ namespace SistemasOperativos_Obligatorio
             foreach (CPU cpu in cpus)
             {
                 cpu.ProcesoActivo = planificador.EjecutarSiguiente();
-                grdProcesadores.Columns.Add(new DataGridViewTextBoxColumn() { Tag = cpu });
+                grdProcesadores.Columns.Add(new DataGridViewTextBoxColumn());
             }
 
             grdProcesadores.Rows.Add(3);
+        }
+
+        private void FrmSimulacion_Shown(object sender, EventArgs e)
+        {
+            grdProcesadores.ClearSelection();
+        }
+
+        public void Notificar(Planificador.Estado estado)
+        {
+            ActualizarEstado(estado);
+        }
+
+        public void ActualizarEstado(Planificador.Estado estado)
+        {
+            List<CPU> cpus = estado.cpus;
+            List<Proceso> procesos = estado.colaDeProcesos;
             for (int i = 0; i < cpus.Count; i++)
             {
                 Color colorEstadoCPU = cpus[i].ProcesoActivo != null ? Color.Green : Color.Orange;
@@ -34,29 +50,6 @@ namespace SistemasOperativos_Obligatorio
                 grdProcesadores.Rows[1].Cells[i].Value = cpus[i];
                 grdProcesadores.Rows[2].Cells[i].Value = cpus[i].ProcesoActivo;
             }
-
-            procesos.Sort((a, b) =>
-            {
-                if (a.estado == Proceso.Estado.enEjecucion)
-                {
-                    if (b.estado == Proceso.Estado.enEjecucion)
-                    {
-                        return a.prioridad.CompareTo(b.prioridad);
-                    }
-                    else
-                    {
-                        return -1;
-                    }
-                }
-                else if (a.estado == Proceso.Estado.finalizado)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return a.prioridad.CompareTo(b.prioridad);
-                }
-            });
 
             for (int i = 0; i < procesos.Count; i++)
             {
@@ -79,16 +72,6 @@ namespace SistemasOperativos_Obligatorio
                 }
                 grdProcesosListos.Rows[i].Cells[colEstadoProcesoListo.Name].Style.BackColor = colorEstadoProceso;
             }
-        }
-
-        private void FrmSimulacion_Shown(object sender, EventArgs e)
-        {
-            grdProcesadores.ClearSelection();
-        }
-
-        public void Notificar(Planificador.Estado estado)
-        {
-
         }
     }
 }

@@ -10,10 +10,10 @@ namespace SistemasOperativos_Obligatorio
         public bool esDeSo;
         public int prioridad;
 
-        public int duracionCPU;
-        public int intervaloES;
-        public int duracionEs;
-        public double tiempoTranscurrido;
+        public TimeSpan duracionCPU;
+        public TimeSpan intervaloES;
+        public TimeSpan duracionEs;
+        public TimeSpan tiempoTranscurrido;
         public Estado estado;
         public CPU cpu;
 
@@ -25,6 +25,7 @@ namespace SistemasOperativos_Obligatorio
             this.intervaloES = plantilla.intervaloEs;
             this.duracionEs = plantilla.duracionES;
             this.estado = Estado.listo;
+            this.tiempoTranscurrido = TimeSpan.Zero;
             this.id = ProxId;
             ProxId++;
 
@@ -54,7 +55,7 @@ namespace SistemasOperativos_Obligatorio
         {
             get
             {
-                if (tiempoTranscurrido == 0)
+                if (tiempoTranscurrido == TimeSpan.Zero)
                 {
                     return 0;
                 }

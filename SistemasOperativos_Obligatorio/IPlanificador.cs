@@ -2,8 +2,7 @@ using System.Collections.Generic;
 
 namespace SistemasOperativos_Obligatorio
 {
-    public interface IPlanificador{
+    public interface IPlanificador : IObservable<PlanificadorBase.Estado>{
         Proceso? EjecutarSiguiente();
-        double ObtenerTiempoMaximoEnCPU();
     }
 }
