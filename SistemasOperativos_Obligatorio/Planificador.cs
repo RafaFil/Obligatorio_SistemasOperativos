@@ -11,12 +11,12 @@ namespace SistemasOperativos_Obligatorio
 
         private PriorityQueue<Proceso, Proceso> cola;
         private Dictionary<Proceso, TimeSpan> quantums;
+        private Dictionary<Proceso, int> envejecimientos;
         private List<Proceso> procesos;
         private List<CPU> cpus;
         private TimeSpan frecuenciaActualizacion;
         private readonly TimeSpan TIEMPO_MAXIMO_CPU = new TimeSpan(0, 0, 5);
 
-        private DateTime ultimaActualizacion;
         private Timer siguienteActualizacion;
 
         public Planificador(List<Proceso> procesos, List<CPU> cpus, double frecuenciaActualizacion)
@@ -24,40 +24,75 @@ namespace SistemasOperativos_Obligatorio
         {
             this.frecuenciaActualizacion = new TimeSpan(0, 0, 0, frecuenciaActualizacion.ParteEntera(),
                 frecuenciaActualizacion.ParteDecimal(3));
+
             this.procesos = procesos;
+            envejecimientos = new Dictionary<Proceso, int>(
+                procesos.Select(p => new KeyValuePair<Proceso, int>(p, 0)));
+            quantums = new Dictionary<Proceso, TimeSpan>();
+
             this.cola = new PriorityQueue<Proceso, Proceso>(from p in procesos select (p, p),
                 Comparer<Proceso>.Create((a, b) =>
                 {
-                    if (a.estado == Proceso.Estado.enEjecucion)
+                    if (a.estado == Proceso.Estado.listo)
                     {
-                        if (b.estado == Proceso.Estado.enEjecucion)
+                        if (b.estado == Proceso.Estado.listo)
                         {
-                            return a.prioridad.CompareTo(b.prioridad);
+                            return -(a.prioridad - envejecimientos[a]).CompareTo(b.prioridad - envejecimientos[b]);
                         }
                         else
                         {
                             return -1;
                         }
                     }
-                    else if (a.estado == Proceso.Estado.finalizado)
+                    else
+                    {
+                        return a.PorcentajeCompletado - b.PorcentajeCompletado;
+                    }
+                    /*
+                    if (a.estado == Proceso.Estado.enEjecucion)
+                    {
+                        if (b.estado == Proceso.Estado.enEjecucion)
+                        {
+                            return (a.prioridad - envejecimientos[a]).CompareTo(b.prioridad - envejecimientos[b]);
+                        }
+                        else
+                        {
+                            return -1;
+                        }
+                    }
+                    else if (a.estado == Proceso.Estado.finalizado && b.estado != Proceso.Estado.finalizado)
                     {
                         return 1;
                     }
                     else
                     {
-                        return a.prioridad.CompareTo(b.prioridad);
+                        return (a.prioridad - envejecimientos[a]).CompareTo(b.prioridad - envejecimientos[b]);
                     }
+                    */
                 }));
+
             this.cpus = cpus;
+            foreach (CPU cpu in cpus)
+            {
+                cpu.ProcesoActivo = MoverLaCola();
+            }
 
             siguienteActualizacion = new Timer(DuracionSiguienteTimer.TotalMilliseconds);
             siguienteActualizacion.Elapsed += ActualizarEstado;
             siguienteActualizacion.AutoReset = false;
-            ultimaActualizacion = DateTime.Now;
+        }
+
+        public override void Iniciar()
+        {
             siguienteActualizacion.Start();
         }
 
-        public override Proceso? EjecutarSiguiente()
+        public override void Pausar()
+        {
+
+        }
+
+        public override Proceso? MoverLaCola()
         {
             Proceso? siguiente = null;
             bool haySiguiente = cola.TryPeek(out siguiente, out _);
@@ -66,7 +101,14 @@ namespace SistemasOperativos_Obligatorio
                 siguiente = cola.Dequeue();
                 AsignarQuantum(siguiente);
 
-                this.procesos.ForEach(p => p.IncrementarPrioridad());
+                procesos.ForEach(p =>
+                {
+                    if (p.estado == Proceso.Estado.listo)
+                    {
+                        envejecimientos[p]--;
+                    }
+                });
+                envejecimientos[siguiente] = 0;
                 siguiente.estado = Proceso.Estado.enEjecucion;
                 return siguiente;
             }
@@ -82,14 +124,14 @@ namespace SistemasOperativos_Obligatorio
             // Si no tiene operaciones E/S, o basándome en el intervalo de E/S veo que no realizará
             // ninguna más antes de terminar
             if (p.intervaloES == TimeSpan.Zero
-                || p.tiempoTranscurrido - p.tiempoTranscurrido.Modulo(p.intervaloES) + p.intervaloES > p.duracionCPU)
+                || p.tiempoTranscurrido - p.tiempoTranscurrido.Mod(p.intervaloES) + p.intervaloES > p.duracionCPU)
             {
                 quantum = new [] { TIEMPO_MAXIMO_CPU, p.duracionCPU - p.tiempoTranscurrido }.Min();
             }
             else
             {
                 quantum = new[] { TIEMPO_MAXIMO_CPU,
-                    p.intervaloES - p.tiempoTranscurrido.Modulo(p.intervaloES) }.Min();
+                    p.intervaloES - p.tiempoTranscurrido.Mod(p.intervaloES) }.Min();
             }
 
             quantums.Add(p, quantum);
@@ -102,12 +144,13 @@ namespace SistemasOperativos_Obligatorio
                 TimeSpan tiempoMinimoHastaES = procesos.Where(p => p.estado == Proceso.Estado.enEjecucion)
                     .Select(p => p.intervaloES == TimeSpan.Zero
                         ? TimeSpan.MaxValue
-                        : p.intervaloES - p.tiempoTranscurrido.Modulo(p.intervaloES))
+                        : p.intervaloES - p.tiempoTranscurrido.Mod(p.intervaloES))
                     .Min();
-                TimeSpan tiempoMinimoHastaFinalizacion =procesos
+                TimeSpan tiempoMinimoHastaFinalizacion = procesos
                     .Where(p => p.estado == Proceso.Estado.enEjecucion)
                     .Select(p => p.duracionCPU - p.tiempoTranscurrido)
                     .Min();
+                // Considerar también los procesos que terminen bloqueo por E/S
                 return new TimeSpan[] { tiempoMinimoHastaES,
                     tiempoMinimoHastaFinalizacion,
                     frecuenciaActualizacion }.Min();
@@ -116,16 +159,46 @@ namespace SistemasOperativos_Obligatorio
 
         private void ActualizarEstado(object? sender, ElapsedEventArgs e)
         {
-            TimeSpan deltaT = DateTime.Now - ultimaActualizacion;
+            TimeSpan deltaT = TimeSpan.FromMilliseconds(siguienteActualizacion.Interval);
             IEnumerable<Proceso> procesosActivos = from cpu in cpus
                                                    where cpu.ProcesoActivo != null
                                                    select cpu.ProcesoActivo;
+
             foreach (Proceso p in procesosActivos)
             {
                 p.tiempoTranscurrido += deltaT;
+                quantums[p] -= deltaT;
+                if (p.intervaloES != TimeSpan.Zero
+                    && p.tiempoTranscurrido.Mod(p.intervaloES) == TimeSpan.Zero)
+                {
+                    ReasignarCPU(p.cpu, Proceso.Estado.bloqueado);
+                }
+                else if (p.tiempoTranscurrido == p.duracionCPU)
+                {
+                    ReasignarCPU(p.cpu, Proceso.Estado.finalizado);
+                }
+                else if (quantums[p] == TimeSpan.Zero)
+                {
+                    ReasignarCPU(p.cpu, Proceso.Estado.listo);
+                }
             }
+            // TODO: también puede ser necesario hacer algo cuando el proceso termina de estar bloqueado
+            Notificar();
 
-            // TODO: seguir con esto
+            if (procesos.Any(p => p.estado != Proceso.Estado.finalizado))
+            {
+                siguienteActualizacion.Interval = DuracionSiguienteTimer.TotalMilliseconds;
+                siguienteActualizacion.Start();
+            }
+        }
+
+        private void ReasignarCPU(CPU cpu, Proceso.Estado nuevoEstado)
+        {
+            cpu.ProcesoActivo.cpu = null;
+            cpu.ProcesoActivo.estado = nuevoEstado;
+            quantums.Remove(cpu.ProcesoActivo);
+            cola.Enqueue(cpu.ProcesoActivo, cpu.ProcesoActivo);
+            cpu.ProcesoActivo = MoverLaCola();
         }
 
         public void Notificar()

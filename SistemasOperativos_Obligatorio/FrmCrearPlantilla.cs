@@ -66,9 +66,9 @@ namespace SistemasOperativos_Obligatorio
         {
             PlantillaProceso pp = (PlantillaProceso) cbxPlantillasCreadas.SelectedItem;
             txtNombre.Text = pp.nombre;
-            numDuracionCPU.Value = pp.duracionCPU;
-            numDuracionES.Value = pp.duracionES;
-            numIntervaloES.Value = pp.intervaloEs;
+            numDuracionCPU.Value = (int) pp.duracionCPU.TotalSeconds;
+            numDuracionES.Value = (int) pp.duracionES.TotalSeconds;
+            numIntervaloES.Value = (int) pp.intervaloEs.TotalSeconds;
             chkEsDeSO.Checked = pp.esDeSo;
         }
 

@@ -6,7 +6,23 @@ namespace SistemasOperativos_Obligatorio
 		private int id;
 		private static int ProxId = 0;
 		private IPlanificador planificador;
-		public Proceso? ProcesoActivo { get; set; }
+        private Proceso? procesoActivo;
+
+		public Proceso? ProcesoActivo
+        {
+            get
+            {
+                return procesoActivo;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    value.Cpu = this;
+                }
+                procesoActivo = value;
+            }
+        }
 		public double Velocidad { get; set; }
 
 		public CPU(double velocidad)

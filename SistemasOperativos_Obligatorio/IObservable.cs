@@ -8,7 +8,7 @@ namespace SistemasOperativos_Obligatorio
 {
     public interface IObservable<T>
     {
-        void Subscribe(IObservador<T> observador);
-        void Unsubscribe(IObservador<T> observador);
+        void VerComoMueveLaCola(IObservador<T> observador);
+        void SalirCorriendoComoElNovio(IObservador<T> observador);
     }
 }

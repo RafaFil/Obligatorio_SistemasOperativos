@@ -8,7 +8,7 @@ namespace Extensiones
 {
     public static class Extensiones
     {
-        public static TimeSpan Modulo(this TimeSpan a, TimeSpan b)
+        public static TimeSpan Mod(this TimeSpan a, TimeSpan b)
         {
             return TimeSpan.FromTicks(a.Ticks % b.Ticks);
         }
@@ -20,7 +20,7 @@ namespace Extensiones
 
         public static int ParteDecimal(this double a, int decimales)
         {
-            return (int)(a - a.ParteEntera() * Math.Pow(10, decimales));
+            return (int)((a - a.ParteEntera()) * Math.Pow(10, decimales));
         }
     }
 }

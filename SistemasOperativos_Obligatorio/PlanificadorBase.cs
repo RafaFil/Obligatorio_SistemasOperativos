@@ -14,9 +14,9 @@ namespace SistemasOperativos_Obligatorio
         {
             observadores = new List<IObservador<Estado>>();
         }
-        public abstract Proceso? EjecutarSiguiente();
+        public abstract Proceso? MoverLaCola();
 
-        public void Subscribe(IObservador<Estado> observador)
+        public void VerComoMueveLaCola(IObservador<Estado> observador)
         {
             if (!observadores.Contains(observador))
             {
@@ -24,13 +24,16 @@ namespace SistemasOperativos_Obligatorio
             }
         }
 
-        public void Unsubscribe(IObservador<Estado> observador)
+        public void SalirCorriendoComoElNovio(IObservador<Estado> observador)
         {
             if (observadores.Contains(observador))
             {
                 observadores.Remove(observador);
             }
         }
+
+        public abstract void Iniciar();
+        public abstract void Pausar();
 
         public class Estado
         {

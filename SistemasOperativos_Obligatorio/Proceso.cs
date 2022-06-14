@@ -61,14 +61,9 @@ namespace SistemasOperativos_Obligatorio
                 }
                 else
                 {
-                    return (int) (duracionCPU / tiempoTranscurrido) * 100;
+                    return (int) (tiempoTranscurrido / duracionCPU * 100);
                 }
             }
-        }
-
-        public void IncrementarPrioridad()
-        {
-            prioridad = Math.Max(1, prioridad - 1);
         }
 
         public enum Estado
