@@ -53,17 +53,9 @@ namespace SistemasOperativos_Obligatorio
 
         public int PorcentajeCompletado
         {
-            get
-            {
-                if (tiempoTranscurrido == TimeSpan.Zero)
-                {
-                    return 0;
-                }
-                else
-                {
-                    return (int) (tiempoTranscurrido / duracionCPU * 100);
-                }
-            }
+            get => tiempoTranscurrido != TimeSpan.Zero 
+                ? (int)(tiempoTranscurrido / duracionCPU * 100) 
+                : 0;
         }
 
         public enum Estado

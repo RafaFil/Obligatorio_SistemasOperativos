@@ -9,9 +9,9 @@ namespace SistemasOperativos_Obligatorio
 
     public class Planificador : PlanificadorBase {
 
-        private PriorityQueue<Proceso, Proceso> cola;
-        private Dictionary<Proceso, TimeSpan> quantums;
-        private Dictionary<Proceso, int> envejecimientos;
+        private PriorityQueue<Proceso, BCP> cola;
+        private Dictionary<Proceso, BCP> bloquesDeControl;
+
         private List<Proceso> procesos;
         private List<CPU> cpus;
         private TimeSpan frecuenciaActualizacion;
@@ -26,18 +26,18 @@ namespace SistemasOperativos_Obligatorio
                 frecuenciaActualizacion.ParteDecimal(3));
 
             this.procesos = procesos;
-            envejecimientos = new Dictionary<Proceso, int>(
-                procesos.Select(p => new KeyValuePair<Proceso, int>(p, 0)));
-            quantums = new Dictionary<Proceso, TimeSpan>();
+            this.bloquesDeControl = new Dictionary<Proceso, BCP>();
+            procesos.ForEach(p => bloquesDeControl.Add(p, new BCP(p)));
 
-            this.cola = new PriorityQueue<Proceso, Proceso>(from p in procesos select (p, p),
-                Comparer<Proceso>.Create((a, b) =>
+            this.cola = new PriorityQueue<Proceso, BCP>(from p in procesos select (p, bloquesDeControl[p]),
+                Comparer<BCP>.Create((a, b) =>
                 {
-                    if (a.estado == Proceso.Estado.listo)
+                    if (a.Estado == Proceso.Estado.listo)
                     {
-                        if (b.estado == Proceso.Estado.listo)
+                        if (b.Estado == Proceso.Estado.listo)
                         {
-                            return -(a.prioridad - envejecimientos[a]).CompareTo(b.prioridad - envejecimientos[b]);
+                            return -(a.Prioridad - a.Envejecimiento)
+                            .CompareTo(b.Prioridad - b.Envejecimiento);
                         }
                         else
                         {
@@ -103,13 +103,13 @@ namespace SistemasOperativos_Obligatorio
 
                 procesos.ForEach(p =>
                 {
-                    if (p.estado == Proceso.Estado.listo)
+                    if (bloquesDeControl[p].Estado == Proceso.Estado.listo)
                     {
-                        envejecimientos[p]--;
+                        bloquesDeControl[p].Envejecimiento--;
                     }
                 });
-                envejecimientos[siguiente] = 0;
-                siguiente.estado = Proceso.Estado.enEjecucion;
+                bloquesDeControl[siguiente].Envejecimiento = 0;
+                bloquesDeControl[siguiente].Estado = Proceso.Estado.enEjecucion;
                 return siguiente;
             }
             else
@@ -134,7 +134,7 @@ namespace SistemasOperativos_Obligatorio
                     p.intervaloES - p.tiempoTranscurrido.Mod(p.intervaloES) }.Min();
             }
 
-            quantums.Add(p, quantum);
+            bloquesDeControl[p].Quantum = quantum;
         }
 
         private TimeSpan DuracionSiguienteTimer
@@ -167,7 +167,7 @@ namespace SistemasOperativos_Obligatorio
             foreach (Proceso p in procesosActivos)
             {
                 p.tiempoTranscurrido += deltaT;
-                quantums[p] -= deltaT;
+                bloquesDeControl[p].Quantum -= deltaT;
                 if (p.intervaloES != TimeSpan.Zero
                     && p.tiempoTranscurrido.Mod(p.intervaloES) == TimeSpan.Zero)
                 {
@@ -177,7 +177,7 @@ namespace SistemasOperativos_Obligatorio
                 {
                     ReasignarCPU(p.cpu, Proceso.Estado.finalizado);
                 }
-                else if (quantums[p] == TimeSpan.Zero)
+                else if (bloquesDeControl[p].Quantum == TimeSpan.Zero)
                 {
                     ReasignarCPU(p.cpu, Proceso.Estado.listo);
                 }
@@ -196,16 +196,18 @@ namespace SistemasOperativos_Obligatorio
         {
             cpu.ProcesoActivo.cpu = null;
             cpu.ProcesoActivo.estado = nuevoEstado;
-            quantums.Remove(cpu.ProcesoActivo);
-            cola.Enqueue(cpu.ProcesoActivo, cpu.ProcesoActivo);
+            bloquesDeControl[cpu.ProcesoActivo].Quantum = TimeSpan.Zero;
+            cola.Enqueue(cpu.ProcesoActivo, bloquesDeControl[cpu.ProcesoActivo]);
             cpu.ProcesoActivo = MoverLaCola();
         }
 
         public void Notificar()
         {
-            procesos.Sort(cola.Comparer);
-            Estado estado = new Estado(procesos,
-                procesos.Where(p => p.estado == Proceso.Estado.bloqueado || p.estado == Proceso.Estado.bloqueadoPorUsuario)
+            Estado estado = new Estado(
+                bloquesDeControl.Keys.OrderBy(p => bloquesDeControl[p], cola.Comparer),
+                bloquesDeControl.Keys.Where(p => 
+                        new [] {Proceso.Estado.bloqueado, Proceso.Estado.bloqueadoPorUsuario }
+                        .Contains(bloquesDeControl[p].Estado))
                     .OrderBy(p => p.estado),
                 cpus);
             foreach (IObservador<Estado> observador in observadores)

@@ -44,8 +44,7 @@ namespace SistemasOperativos_Obligatorio
         public void ActualizarEstado(PlanificadorBase.Estado estado)
         {
             List<CPU> cpus = estado.cpus;
-            List<Proceso> procesos = estado.colaDeProcesos;
-            procesos.Reverse();
+            IOrderedEnumerable<Proceso> procesos = estado.colaDeProcesos;
             for (int i = 0; i < cpus.Count; i++)
             {
                 Color colorEstadoCPU = cpus[i].ProcesoActivo != null ? Color.Green : Color.Orange;
@@ -54,35 +53,31 @@ namespace SistemasOperativos_Obligatorio
                 grdProcesadores.Rows[2].Cells[i].Value = cpus[i].ProcesoActivo;
             }
 
-            grdProcesosListos.Invoke((List<Proceso> procesos) =>
+            grdProcesosListos.Invoke((IOrderedEnumerable<Proceso> procesos) =>
             {
                 grdProcesosListos.Rows.Clear();
-                procesos.ForEach(p =>
+                procesos.Reverse().ToList().ForEach(p =>
                 {
                     grdProcesosListos.Rows.Add(p.id, p.nombre, p.prioridad, p.duracionCPU, p.duracionEs,
                         p.intervaloES, p.PorcentajeCompletado + "%");
+
+                    Color colorEstadoProceso;
+                    switch (p.estado)
+                    {
+                        case Proceso.Estado.enEjecucion:
+                            colorEstadoProceso = Color.Yellow;
+                            break;
+                        case Proceso.Estado.listo:
+                            colorEstadoProceso = Color.Orange;
+                            break;
+                        default:
+                            colorEstadoProceso = Color.Green;
+                            break;
+                    }
+                    grdProcesosListos.Rows[^1].Cells[colEstadoProcesoListo.Name]
+                        .Style.BackColor = colorEstadoProceso;
                 });
             }, procesos);
-
-            for (int i = 0; i < procesos.Count; i++)
-            {
-                Proceso p = procesos[i];
-                Color colorEstadoProceso;
-                switch (p.estado)
-                {
-                    case Proceso.Estado.enEjecucion:
-                        colorEstadoProceso = Color.Yellow;
-                        break;
-                    case Proceso.Estado.listo:
-                        colorEstadoProceso = Color.Orange;
-                        break;
-                    default:
-                        colorEstadoProceso = Color.Green;
-                        break;
-                }
-                grdProcesosListos.Rows[i].Cells[colEstadoProcesoListo.Name]
-                    .Style.BackColor = colorEstadoProceso;
-            }
         }
     }
 }

@@ -138,17 +138,23 @@ namespace SistemasOperativos_Obligatorio
             if (MessageBox.Show("¿Desea eliminar todos los procesos y CPUs ingresados?", "Confirmación",
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation) == DialogResult.OK)
             {
-                procesosIngresados.Clear();
-                cpusDisponibles.Clear();
-                actualizarProcesosIngresados();
-                actualizarCPUsDisponibles();
+                LimpiarSimulacion();
             } 
+        }
+
+        private void LimpiarSimulacion()
+        {
+            procesosIngresados.Clear();
+            cpusDisponibles.Clear();
+            actualizarProcesosIngresados();
+            actualizarCPUsDisponibles();
         }
 
         private void btnIniciarSimulacion_Click(object sender, EventArgs e)
         {
             FrmSimulacion frm = new FrmSimulacion(procesosIngresados, cpusDisponibles);
             frm.ShowDialog();
+            LimpiarSimulacion();
         }
     }
 }

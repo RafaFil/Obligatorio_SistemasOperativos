@@ -24,7 +24,7 @@ namespace SistemasOperativos_Obligatorio
             }
         }
 
-        public void SalirCorriendoComoElNovio(IObservador<Estado> observador)
+        public void SalirCorriendoAlVerSuPistola(IObservador<Estado> observador)
         {
             if (observadores.Contains(observador))
             {
@@ -37,11 +37,11 @@ namespace SistemasOperativos_Obligatorio
 
         public class Estado
         {
-            public List<Proceso> colaDeProcesos;
+            public IOrderedEnumerable<Proceso> colaDeProcesos;
             public IOrderedEnumerable<Proceso> procesosBloqueados;
             public List<CPU> cpus;
 
-            public Estado(List<Proceso> colaDeProcesos,
+            public Estado(IOrderedEnumerable<Proceso> colaDeProcesos,
                 IOrderedEnumerable<Proceso> procesosBloqueados, List<CPU> cpus)
             {
                 this.colaDeProcesos = colaDeProcesos;

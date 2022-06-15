@@ -9,6 +9,6 @@ namespace SistemasOperativos_Obligatorio
     public interface IObservable<T>
     {
         void VerComoMueveLaCola(IObservador<T> observador);
-        void SalirCorriendoComoElNovio(IObservador<T> observador);
+        void SalirCorriendoAlVerSuPistola(IObservador<T> observador);
     }
 }
