@@ -30,9 +30,6 @@
         {
             this.grdProcesadores = new System.Windows.Forms.DataGridView();
             this.grdProcesosListos = new System.Windows.Forms.DataGridView();
-            this.lblProcesosListos = new System.Windows.Forms.Label();
-            this.grdProcesosBloqueados = new System.Windows.Forms.DataGridView();
-            this.lblProcesosBloqueados = new System.Windows.Forms.Label();
             this.colIDProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colNombreProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPrioridadProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -41,6 +38,12 @@
             this.colIntervaloESProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCompletadoProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colEstadoProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblProcesosListos = new System.Windows.Forms.Label();
+            this.grdProcesosBloqueados = new System.Windows.Forms.DataGridView();
+            this.colIDProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colNombreProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMotiboProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblProcesosBloqueados = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesadores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesosListos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesosBloqueados)).BeginInit();
@@ -92,39 +95,6 @@
             this.grdProcesosListos.Size = new System.Drawing.Size(493, 299);
             this.grdProcesosListos.TabIndex = 1;
             // 
-            // lblProcesosListos
-            // 
-            this.lblProcesosListos.AutoSize = true;
-            this.lblProcesosListos.Location = new System.Drawing.Point(12, 121);
-            this.lblProcesosListos.Name = "lblProcesosListos";
-            this.lblProcesosListos.Size = new System.Drawing.Size(97, 15);
-            this.lblProcesosListos.TabIndex = 2;
-            this.lblProcesosListos.Text = "Cola de procesos";
-            // 
-            // grdProcesosBloqueados
-            // 
-            this.grdProcesosBloqueados.AllowUserToAddRows = false;
-            this.grdProcesosBloqueados.AllowUserToDeleteRows = false;
-            this.grdProcesosBloqueados.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.grdProcesosBloqueados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.grdProcesosBloqueados.Location = new System.Drawing.Point(511, 139);
-            this.grdProcesosBloqueados.Name = "grdProcesosBloqueados";
-            this.grdProcesosBloqueados.ReadOnly = true;
-            this.grdProcesosBloqueados.RowTemplate.Height = 25;
-            this.grdProcesosBloqueados.Size = new System.Drawing.Size(277, 146);
-            this.grdProcesosBloqueados.TabIndex = 3;
-            // 
-            // lblProcesosBloqueados
-            // 
-            this.lblProcesosBloqueados.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblProcesosBloqueados.AutoSize = true;
-            this.lblProcesosBloqueados.Location = new System.Drawing.Point(511, 121);
-            this.lblProcesosBloqueados.Name = "lblProcesosBloqueados";
-            this.lblProcesosBloqueados.Size = new System.Drawing.Size(119, 15);
-            this.lblProcesosBloqueados.TabIndex = 4;
-            this.lblProcesosBloqueados.Text = "Procesos bloqueados";
-            // 
             // colIDProcesoListo
             // 
             this.colIDProcesoListo.HeaderText = "ID";
@@ -173,6 +143,63 @@
             this.colEstadoProcesoListo.Name = "colEstadoProcesoListo";
             this.colEstadoProcesoListo.ReadOnly = true;
             // 
+            // lblProcesosListos
+            // 
+            this.lblProcesosListos.AutoSize = true;
+            this.lblProcesosListos.Location = new System.Drawing.Point(12, 121);
+            this.lblProcesosListos.Name = "lblProcesosListos";
+            this.lblProcesosListos.Size = new System.Drawing.Size(97, 15);
+            this.lblProcesosListos.TabIndex = 2;
+            this.lblProcesosListos.Text = "Cola de procesos";
+            // 
+            // grdProcesosBloqueados
+            // 
+            this.grdProcesosBloqueados.AllowUserToAddRows = false;
+            this.grdProcesosBloqueados.AllowUserToDeleteRows = false;
+            this.grdProcesosBloqueados.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grdProcesosBloqueados.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.grdProcesosBloqueados.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grdProcesosBloqueados.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colIDProcesoBloqueado,
+            this.colNombreProcesoBloqueado,
+            this.colMotiboProcesoBloqueado});
+            this.grdProcesosBloqueados.Location = new System.Drawing.Point(511, 139);
+            this.grdProcesosBloqueados.Name = "grdProcesosBloqueados";
+            this.grdProcesosBloqueados.ReadOnly = true;
+            this.grdProcesosBloqueados.RowHeadersVisible = false;
+            this.grdProcesosBloqueados.RowTemplate.Height = 25;
+            this.grdProcesosBloqueados.Size = new System.Drawing.Size(277, 146);
+            this.grdProcesosBloqueados.TabIndex = 3;
+            // 
+            // colIDProcesoBloqueado
+            // 
+            this.colIDProcesoBloqueado.HeaderText = "ID";
+            this.colIDProcesoBloqueado.Name = "colIDProcesoBloqueado";
+            this.colIDProcesoBloqueado.ReadOnly = true;
+            // 
+            // colNombreProcesoBloqueado
+            // 
+            this.colNombreProcesoBloqueado.HeaderText = "Nombre";
+            this.colNombreProcesoBloqueado.Name = "colNombreProcesoBloqueado";
+            this.colNombreProcesoBloqueado.ReadOnly = true;
+            // 
+            // colMotiboProcesoBloqueado
+            // 
+            this.colMotiboProcesoBloqueado.HeaderText = "Motivo";
+            this.colMotiboProcesoBloqueado.Name = "colMotiboProcesoBloqueado";
+            this.colMotiboProcesoBloqueado.ReadOnly = true;
+            // 
+            // lblProcesosBloqueados
+            // 
+            this.lblProcesosBloqueados.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblProcesosBloqueados.AutoSize = true;
+            this.lblProcesosBloqueados.Location = new System.Drawing.Point(511, 121);
+            this.lblProcesosBloqueados.Name = "lblProcesosBloqueados";
+            this.lblProcesosBloqueados.Size = new System.Drawing.Size(119, 15);
+            this.lblProcesosBloqueados.TabIndex = 4;
+            this.lblProcesosBloqueados.Text = "Procesos bloqueados";
+            // 
             // FrmSimulacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -186,6 +213,7 @@
             this.Name = "FrmSimulacion";
             this.Text = "Simulación";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.FrmSimulacion_Load);
             this.Shown += new System.EventHandler(this.FrmSimulacion_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesadores)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesosListos)).EndInit();
@@ -210,5 +238,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colIntervaloESProcesoListo;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCompletadoProcesoListo;
         private System.Windows.Forms.DataGridViewTextBoxColumn colEstadoProcesoListo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colIDProcesoBloqueado;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNombreProcesoBloqueado;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMotiboProcesoBloqueado;
     }
 }

@@ -18,17 +18,18 @@ namespace SistemasOperativos_Obligatorio
         {
             InitializeComponent();
 
-            planificador = new Planificador(procesos, cpus, 1);
-
+            planificador = new PlanificadorRoundRobin(procesos, cpus, 5);
             foreach (CPU cpu in cpus)
             {
                 grdProcesadores.Columns.Add(new DataGridViewTextBoxColumn());
             }
-
             grdProcesadores.Rows.Add(3);
+        }
 
-            planificador.VerComoMueveLaCola(this);
+        private void FrmSimulacion_Load(object sender, EventArgs e)
+        {
             planificador.Iniciar();
+            planificador.VerComoMueveLaCola(this);
         }
 
         private void FrmSimulacion_Shown(object sender, EventArgs e)
@@ -45,6 +46,7 @@ namespace SistemasOperativos_Obligatorio
         {
             List<CPU> cpus = estado.cpus;
             IOrderedEnumerable<Proceso> procesos = estado.colaDeProcesos;
+            IOrderedEnumerable<Proceso> bloqueados = estado.procesosBloqueados;
             for (int i = 0; i < cpus.Count; i++)
             {
                 Color colorEstadoCPU = cpus[i].ProcesoActivo != null ? Color.Green : Color.Orange;
@@ -53,31 +55,41 @@ namespace SistemasOperativos_Obligatorio
                 grdProcesadores.Rows[2].Cells[i].Value = cpus[i].ProcesoActivo;
             }
 
-            grdProcesosListos.Invoke((IOrderedEnumerable<Proceso> procesos) =>
-            {
-                grdProcesosListos.Rows.Clear();
-                procesos.Reverse().ToList().ForEach(p =>
+            grdProcesosListos.Invoke(
+                (IOrderedEnumerable<Proceso> procesos, IOrderedEnumerable<Proceso> bloqueados) =>
                 {
-                    grdProcesosListos.Rows.Add(p.id, p.nombre, p.prioridad, p.duracionCPU, p.duracionEs,
-                        p.intervaloES, p.PorcentajeCompletado + "%");
-
-                    Color colorEstadoProceso;
-                    switch (p.estado)
+                    grdProcesosListos.Rows.Clear();
+                    procesos.Reverse().ToList().ForEach(p =>
                     {
-                        case Proceso.Estado.enEjecucion:
-                            colorEstadoProceso = Color.Yellow;
-                            break;
-                        case Proceso.Estado.listo:
-                            colorEstadoProceso = Color.Orange;
-                            break;
-                        default:
-                            colorEstadoProceso = Color.Green;
-                            break;
-                    }
-                    grdProcesosListos.Rows[^1].Cells[colEstadoProcesoListo.Name]
-                        .Style.BackColor = colorEstadoProceso;
-                });
-            }, procesos);
+                        grdProcesosListos.Rows.Add(p.id, p.nombre, p.prioridad, p.duracionCPU,
+                            p.duracionEs, p.intervaloES, p.PorcentajeCPUCompletado + "%");
+
+                        Color colorEstadoProceso;
+                        switch (p.estado)
+                        {
+                            case Proceso.Estado.enEjecucion:
+                                colorEstadoProceso = Color.Yellow;
+                                break;
+                            case Proceso.Estado.listo:
+                                colorEstadoProceso = Color.Orange;
+                                break;
+                            default:
+                                colorEstadoProceso = Color.Green;
+                                break;
+                        }
+                        grdProcesosListos.Rows[^1].Cells[colEstadoProcesoListo.Name]
+                            .Style.BackColor = colorEstadoProceso;
+                    });
+                    grdProcesosListos.ClearSelection();
+
+                    grdProcesosBloqueados.Rows.Clear();
+                    bloqueados.Reverse().ToList().ForEach(p =>
+                    {
+                        grdProcesosBloqueados.Rows.Add("#" + p.id, p.nombre,
+                            p.estado == Proceso.Estado.bloqueado ? "E/S" : "Usuario");
+                    });
+                    grdProcesosBloqueados.ClearSelection();
+                }, procesos, bloqueados);
         }
     }
 }

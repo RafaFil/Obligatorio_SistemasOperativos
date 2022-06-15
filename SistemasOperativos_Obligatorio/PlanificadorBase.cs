@@ -14,13 +14,13 @@ namespace SistemasOperativos_Obligatorio
         {
             observadores = new List<IObservador<Estado>>();
         }
-        public abstract Proceso? MoverLaCola();
 
         public void VerComoMueveLaCola(IObservador<Estado> observador)
         {
             if (!observadores.Contains(observador))
             {
                 observadores.Add(observador);
+                Notificar(observador);
             }
         }
 
@@ -34,6 +34,9 @@ namespace SistemasOperativos_Obligatorio
 
         public abstract void Iniciar();
         public abstract void Pausar();
+        protected abstract void Notificar();
+        protected abstract void Notificar(IObservador<Estado> observador);
+        protected abstract Estado GenerarEstado();
 
         public class Estado
         {

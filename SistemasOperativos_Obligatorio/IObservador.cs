@@ -8,6 +8,10 @@ namespace SistemasOperativos_Obligatorio
 {
     public interface IObservador<T>
     {
+        /// <summary>
+        /// Envia una notificación a este observador.
+        /// </summary>
+        /// <param name="notificacion">los datos que el observador espera recibir del IObservable</param>
         void Notificar(T notificacion);
     }
 }

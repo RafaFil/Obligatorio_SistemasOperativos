@@ -8,6 +8,9 @@ namespace SistemasOperativos_Obligatorio
 		private IPlanificador planificador;
         private Proceso? procesoActivo;
 
+        /// <summary>
+        /// El proceso que se está ejecutando actualmente en este CPU.
+        /// </summary>
 		public Proceso? ProcesoActivo
         {
             get
@@ -23,8 +26,16 @@ namespace SistemasOperativos_Obligatorio
                 procesoActivo = value;
             }
         }
+
+        /// <summary>
+        /// Velocidad relativa de este CPU.
+        /// </summary>
 		public double Velocidad { get; set; }
 
+        /// <summary>
+        /// Crea un nuevo CPU sin proceso asignado y la velocidad relativa indicada.
+        /// </summary>
+        /// <param name="velocidad"></param>
 		public CPU(double velocidad)
 		{
 			this.id = CPU.ProxId;
@@ -33,12 +44,19 @@ namespace SistemasOperativos_Obligatorio
 			this.Velocidad = velocidad;
         }
 
+        /// <summary>
+        /// Identificador único del CPU.
+        /// </summary>
 		public int Id{
             get{
 				return this.id;
             }
         }
 
+        /// <summary>
+        /// Devuelve una representación textual de este CPU.
+        /// </summary>
+        /// <returns>la representación textyal de este CPU</returns>
         public override string ToString()
         {
             return $"CPU {Id} @ {Velocidad * 100}%";

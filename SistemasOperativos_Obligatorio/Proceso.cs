@@ -13,9 +13,10 @@ namespace SistemasOperativos_Obligatorio
         public TimeSpan duracionCPU;
         public TimeSpan intervaloES;
         public TimeSpan duracionEs;
-        public TimeSpan tiempoTranscurrido;
+        public TimeSpan tiempoCPUTranscurrido;
+        public TimeSpan tiempoESTranscurrido;
         public Estado estado;
-        public CPU cpu;
+        public CPU? cpu;
 
 
         public Proceso (PlantillaProceso plantilla){
@@ -25,7 +26,8 @@ namespace SistemasOperativos_Obligatorio
             this.intervaloES = plantilla.intervaloEs;
             this.duracionEs = plantilla.duracionES;
             this.estado = Estado.listo;
-            this.tiempoTranscurrido = TimeSpan.Zero;
+            this.tiempoCPUTranscurrido = TimeSpan.Zero;
+            this.tiempoESTranscurrido = TimeSpan.Zero;
             this.id = ProxId;
             ProxId++;
 
@@ -42,7 +44,7 @@ namespace SistemasOperativos_Obligatorio
             }
         }
 
-        public CPU Cpu{
+        public CPU? Cpu{
             get{
                 return this.cpu;
             }
@@ -51,11 +53,22 @@ namespace SistemasOperativos_Obligatorio
             }
         }
 
-        public int PorcentajeCompletado
+        public int PorcentajeCPUCompletado
         {
-            get => tiempoTranscurrido != TimeSpan.Zero 
-                ? (int)(tiempoTranscurrido / duracionCPU * 100) 
+            get => tiempoCPUTranscurrido != TimeSpan.Zero 
+                ? (int)(tiempoCPUTranscurrido / duracionCPU * 100) 
                 : 0;
+        }
+        public int PorcentajeESCompletado
+        {
+            get => tiempoESTranscurrido != TimeSpan.Zero
+                ? (int)(tiempoESTranscurrido / intervaloES * 100)
+                : 0;
+        }
+
+        public bool EstaBloqueado
+        {
+            get => estado == Estado.bloqueado || estado == Estado.bloqueadoPorUsuario;
         }
 
         public enum Estado

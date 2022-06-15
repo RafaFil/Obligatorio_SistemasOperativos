@@ -12,8 +12,16 @@ namespace SistemasOperativos_Obligatorio
 {
     public partial class FrmCrearPlantilla : Form
     {
-        public PlantillaProceso? plantillaCreada;
+        /// <summary>
+        /// La plantilla creada a través del formulario. Si el usuario cancela la operación,
+        /// su valor es null.
+        /// </summary>
+        public PlantillaProceso? plantillaCreada { get; set; }
 
+        /// <summary>
+        /// Crea un formulario que permite al usuario crear una plantilla de procesos.
+        /// </summary>
+        /// <param name="plantillas"></param>
         public FrmCrearPlantilla(List<PlantillaProceso> plantillas)
         {
             InitializeComponent();
