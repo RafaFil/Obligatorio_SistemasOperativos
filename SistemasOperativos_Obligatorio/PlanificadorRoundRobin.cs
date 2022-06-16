@@ -45,7 +45,7 @@ namespace SistemasOperativos_Obligatorio
                 (a.Prioridad - a.Envejecimiento).CompareTo(b.Prioridad - b.Envejecimiento)));
 
             this.colaBloqueados = new PriorityQueue<Proceso, BCP>(
-                Comparer<BCP>.Create((a, b) => a.Proceso.PorcentajeESCompletado.CompareTo(b.Proceso.PorcentajeESCompletado)));
+                Comparer<BCP>.Create((a, b) => a.DuracionESRestante.CompareTo(b.DuracionESRestante)));
             
             this.colaFinalizados = new PriorityQueue<Proceso, BCP>(
                 Comparer<BCP>.Create((a, b) => a.Proceso.id.CompareTo(b.Proceso.id)));

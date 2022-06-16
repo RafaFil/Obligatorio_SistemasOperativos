@@ -26,7 +26,10 @@ namespace SistemasOperativos_Obligatorio
         /// <summary>
         /// Tiempo hasta la siguiente operación E/S de este proceso
         /// </summary>
-        public TimeSpan DuracionESRestante { get; set; }
+        public TimeSpan DuracionESRestante
+        {
+            get => Proceso.duracionEs - Proceso.tiempoESTranscurrido;
+        }
 
         /// <summary>
         /// Estado del proceso asociado
@@ -62,7 +65,6 @@ namespace SistemasOperativos_Obligatorio
             this.Proceso = p;
             Envejecimiento = 0;
             Quantum = TimeSpan.Zero;
-            DuracionESRestante = TimeSpan.Zero;
             Estado = Proceso.Estado.listo;
         }
     }
