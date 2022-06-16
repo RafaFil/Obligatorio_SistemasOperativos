@@ -8,13 +8,15 @@ namespace SistemasOperativos_Obligatorio
 {
     public class PlanificadorRoundRobin : PlanificadorBase {
 
-        private PriorityQueue<Proceso, BCP> cola;
+        private PriorityQueue<Proceso, BCP> colaListos;
+        private PriorityQueue<Proceso, BCP> colaBloqueados;
+        private PriorityQueue<Proceso, BCP> colaFinalizados;
         private Dictionary<Proceso, BCP> bloquesDeControl;
 
         private List<Proceso> procesos;
         private List<CPU> cpus;
         private TimeSpan frecuenciaActualizacion;
-        private readonly TimeSpan TIEMPO_MAXIMO_CPU = new TimeSpan(0, 0, 20);
+        private readonly TimeSpan TIEMPO_MAXIMO_CPU = new TimeSpan(0, 0, 5);
 
         private Timer siguienteActualizacion;
 
@@ -34,27 +36,19 @@ namespace SistemasOperativos_Obligatorio
             this.procesos = procesos;
             this.bloquesDeControl = new Dictionary<Proceso, BCP>();
             procesos.ForEach(p => bloquesDeControl.Add(p, new BCP(p)));
+            Comparer<BCP> comparadorPrioridades = Comparer<BCP>.Create((a, b) =>
+                (a.Prioridad - a.Envejecimiento).CompareTo(b.Prioridad - b.Envejecimiento));
 
-            this.cola = new PriorityQueue<Proceso, BCP>(from p in procesos select (p, bloquesDeControl[p]),
+            this.colaListos = new PriorityQueue<Proceso, BCP>(
+                from p in procesos select (p, bloquesDeControl[p]),
                 Comparer<BCP>.Create((a, b) =>
-                {
-                    if (a.Estado == Proceso.Estado.listo)
-                    {
-                        if (b.Estado == Proceso.Estado.listo)
-                        {
-                            return -(a.Prioridad - a.Envejecimiento)
-                            .CompareTo(b.Prioridad - b.Envejecimiento);
-                        }
-                        else
-                        {
-                            return -1;
-                        }
-                    }
-                    else
-                    {
-                        return a.PorcentajeCompletado - b.PorcentajeCompletado;
-                    }
-                }));
+                (a.Prioridad - a.Envejecimiento).CompareTo(b.Prioridad - b.Envejecimiento)));
+
+            this.colaBloqueados = new PriorityQueue<Proceso, BCP>(
+                Comparer<BCP>.Create((a, b) => a.Proceso.PorcentajeESCompletado.CompareTo(b.Proceso.PorcentajeESCompletado)));
+            
+            this.colaFinalizados = new PriorityQueue<Proceso, BCP>(
+                Comparer<BCP>.Create((a, b) => a.Proceso.id.CompareTo(b.Proceso.id)));
 
             this.cpus = cpus;
             foreach (CPU cpu in cpus)
@@ -86,10 +80,10 @@ namespace SistemasOperativos_Obligatorio
         public Proceso? MoverLaCola()
         {
             Proceso? siguiente = null;
-            bool haySiguiente = cola.TryPeek(out siguiente, out _);
+            bool haySiguiente = colaListos.TryPeek(out siguiente, out _);
             if (haySiguiente && siguiente?.estado == Proceso.Estado.listo)
             {
-                siguiente = cola.Dequeue();
+                siguiente = colaListos.Dequeue();
                 AsignarQuantum(siguiente);
 
                 procesos.ForEach(p =>
@@ -164,7 +158,7 @@ namespace SistemasOperativos_Obligatorio
                 if (procesosBloqueadosPorES.Count() > 0)
                 {
                     tiempoMinimoHastaDesbloqueo = procesosBloqueadosPorES
-                        .Select(p => p.intervaloES - p.tiempoESTranscurrido)
+                        .Select(p => p.duracionEs - p.tiempoESTranscurrido)
                         .Min();
                 }
 
@@ -190,15 +184,22 @@ namespace SistemasOperativos_Obligatorio
             IEnumerable<Proceso> procesosBloqueados = from bcp in bloquesDeControl.Values
                                                       where bcp.Proceso.EstaBloqueado
                                                       select bcp.Proceso;
-                                                      
+            
+            
+
             foreach (Proceso p in procesosBloqueados)
             {
                 p.tiempoESTranscurrido += deltaT;
-                if (p.tiempoESTranscurrido == p.duracionEs)
-                {
-                    p.estado = Proceso.Estado.listo;
-                    p.tiempoESTranscurrido = TimeSpan.Zero;
-                }
+            }
+
+            (Proceso?, BCP?) primerPar = new (null, null);
+            while (colaBloqueados.TryPeek(out primerPar.Item1, out primerPar.Item2)
+                && primerPar.Item1.tiempoESTranscurrido == primerPar.Item1.duracionEs)
+            {
+                Proceso p = colaBloqueados.Dequeue();
+                p.estado = Proceso.Estado.listo;
+                p.tiempoESTranscurrido = TimeSpan.Zero;
+                colaListos.Enqueue(p, bloquesDeControl[p]);
             }
 
             foreach (CPU cpu in cpus)
@@ -238,7 +239,9 @@ namespace SistemasOperativos_Obligatorio
 
             Notificar();
 
-            if (procesos.Any(p => p.estado != Proceso.Estado.finalizado))
+            if (colaListos.UnorderedItems.Any()
+                || colaBloqueados.UnorderedItems.Any()
+                || procesosActivos.Any())
             {
                 siguienteActualizacion.Interval = DuracionSiguienteTimer.TotalMilliseconds;
                 siguienteActualizacion.Start();
@@ -259,7 +262,20 @@ namespace SistemasOperativos_Obligatorio
                 cpu.ProcesoActivo.cpu = null;
                 cpu.ProcesoActivo.estado = nuevoEstado;
                 bloquesDeControl[cpu.ProcesoActivo].Quantum = TimeSpan.Zero;
-                cola.Enqueue(cpu.ProcesoActivo, bloquesDeControl[cpu.ProcesoActivo]);
+                switch (nuevoEstado)
+                {
+                    case Proceso.Estado.listo:
+                        colaListos.Enqueue(cpu.ProcesoActivo, bloquesDeControl[cpu.ProcesoActivo]);
+                        break;
+
+                    case Proceso.Estado.bloqueado:
+                        colaBloqueados.Enqueue(cpu.ProcesoActivo, bloquesDeControl[cpu.ProcesoActivo]);
+                        break;
+
+                    case Proceso.Estado.finalizado:
+                        colaFinalizados.Enqueue(cpu.ProcesoActivo, bloquesDeControl[cpu.ProcesoActivo]);
+                        break;
+                }
             }
             cpu.ProcesoActivo = MoverLaCola();
         }
@@ -284,10 +300,12 @@ namespace SistemasOperativos_Obligatorio
         protected override Estado GenerarEstado()
         {
             return new Estado(
-                bloquesDeControl.Keys.Where(p => !p.EstaBloqueado)
-                    .OrderBy(p => bloquesDeControl[p], cola.Comparer),
-                bloquesDeControl.Keys.Where(p => p.EstaBloqueado)
-                    .OrderBy(p => p.estado),
+                colaListos.UnorderedItems.ToList().Select(par => par.Element)
+                    .OrderBy(p => bloquesDeControl[p], colaListos.Comparer),
+                colaBloqueados.UnorderedItems.ToList().Select(par => par.Element)
+                    .OrderBy(p => bloquesDeControl[p], colaBloqueados.Comparer),
+                colaFinalizados.UnorderedItems.ToList().Select(par => par.Element)
+                    .OrderBy(p => bloquesDeControl[p], colaFinalizados.Comparer),
                 cpus);
         }
     }

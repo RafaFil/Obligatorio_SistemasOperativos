@@ -40,10 +40,11 @@
             this.colEstadoProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblProcesosListos = new System.Windows.Forms.Label();
             this.grdProcesosBloqueados = new System.Windows.Forms.DataGridView();
+            this.lblProcesosBloqueados = new System.Windows.Forms.Label();
             this.colIDProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colNombreProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMotiboProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.lblProcesosBloqueados = new System.Windows.Forms.Label();
+            this.colProcesoBloqueadoCompletado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesadores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesosListos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesosBloqueados)).BeginInit();
@@ -163,7 +164,8 @@
             this.grdProcesosBloqueados.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colIDProcesoBloqueado,
             this.colNombreProcesoBloqueado,
-            this.colMotiboProcesoBloqueado});
+            this.colMotiboProcesoBloqueado,
+            this.colProcesoBloqueadoCompletado});
             this.grdProcesosBloqueados.Location = new System.Drawing.Point(511, 139);
             this.grdProcesosBloqueados.Name = "grdProcesosBloqueados";
             this.grdProcesosBloqueados.ReadOnly = true;
@@ -171,6 +173,16 @@
             this.grdProcesosBloqueados.RowTemplate.Height = 25;
             this.grdProcesosBloqueados.Size = new System.Drawing.Size(277, 146);
             this.grdProcesosBloqueados.TabIndex = 3;
+            // 
+            // lblProcesosBloqueados
+            // 
+            this.lblProcesosBloqueados.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblProcesosBloqueados.AutoSize = true;
+            this.lblProcesosBloqueados.Location = new System.Drawing.Point(511, 121);
+            this.lblProcesosBloqueados.Name = "lblProcesosBloqueados";
+            this.lblProcesosBloqueados.Size = new System.Drawing.Size(119, 15);
+            this.lblProcesosBloqueados.TabIndex = 4;
+            this.lblProcesosBloqueados.Text = "Procesos bloqueados";
             // 
             // colIDProcesoBloqueado
             // 
@@ -190,15 +202,11 @@
             this.colMotiboProcesoBloqueado.Name = "colMotiboProcesoBloqueado";
             this.colMotiboProcesoBloqueado.ReadOnly = true;
             // 
-            // lblProcesosBloqueados
+            // colProcesoBloqueadoCompletado
             // 
-            this.lblProcesosBloqueados.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblProcesosBloqueados.AutoSize = true;
-            this.lblProcesosBloqueados.Location = new System.Drawing.Point(511, 121);
-            this.lblProcesosBloqueados.Name = "lblProcesosBloqueados";
-            this.lblProcesosBloqueados.Size = new System.Drawing.Size(119, 15);
-            this.lblProcesosBloqueados.TabIndex = 4;
-            this.lblProcesosBloqueados.Text = "Procesos bloqueados";
+            this.colProcesoBloqueadoCompletado.HeaderText = "Completado";
+            this.colProcesoBloqueadoCompletado.Name = "colProcesoBloqueadoCompletado";
+            this.colProcesoBloqueadoCompletado.ReadOnly = true;
             // 
             // FrmSimulacion
             // 
@@ -241,5 +249,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colIDProcesoBloqueado;
         private System.Windows.Forms.DataGridViewTextBoxColumn colNombreProcesoBloqueado;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMotiboProcesoBloqueado;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colProcesoBloqueadoCompletado;
     }
 }

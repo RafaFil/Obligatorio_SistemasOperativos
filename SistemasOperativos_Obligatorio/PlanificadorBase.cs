@@ -40,15 +40,17 @@ namespace SistemasOperativos_Obligatorio
 
         public class Estado
         {
-            public IOrderedEnumerable<Proceso> colaDeProcesos;
-            public IOrderedEnumerable<Proceso> procesosBloqueados;
+            public IOrderedEnumerable<Proceso> listos;
+            public IOrderedEnumerable<Proceso> bloqueados;
+            public IOrderedEnumerable<Proceso> finalizados;
             public List<CPU> cpus;
 
-            public Estado(IOrderedEnumerable<Proceso> colaDeProcesos,
-                IOrderedEnumerable<Proceso> procesosBloqueados, List<CPU> cpus)
+            public Estado(IOrderedEnumerable<Proceso> listos, IOrderedEnumerable<Proceso> bloqueados,
+                IOrderedEnumerable<Proceso> finalizados, List<CPU> cpus)
             {
-                this.colaDeProcesos = colaDeProcesos;
-                this.procesosBloqueados = procesosBloqueados;
+                this.listos = listos;
+                this.bloqueados = bloqueados;
+                this.finalizados = finalizados;
                 this.cpus = cpus;
             }
         }

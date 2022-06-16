@@ -62,7 +62,7 @@ namespace SistemasOperativos_Obligatorio
         public int PorcentajeESCompletado
         {
             get => tiempoESTranscurrido != TimeSpan.Zero
-                ? (int)(tiempoESTranscurrido / intervaloES * 100)
+                ? (int)(tiempoESTranscurrido / duracionEs * 100)
                 : 0;
         }
 
