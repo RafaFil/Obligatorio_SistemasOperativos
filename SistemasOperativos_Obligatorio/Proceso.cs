@@ -18,7 +18,6 @@ namespace SistemasOperativos_Obligatorio
         public Estado estado;
         public CPU? cpu;
 
-
         public Proceso (PlantillaProceso plantilla){
             this.nombre = plantilla.nombre;
             this.duracionCPU = plantilla.duracionCPU;
@@ -30,9 +29,6 @@ namespace SistemasOperativos_Obligatorio
             this.tiempoESTranscurrido = TimeSpan.Zero;
             this.id = ProxId;
             ProxId++;
-
-            //Falta asignar la CPU (lo asigna el planificador con su metodo Get)
-            //Falta asignar la prioridad 
         }
 
         public int Prioridad{
