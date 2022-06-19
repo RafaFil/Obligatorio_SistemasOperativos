@@ -38,6 +38,8 @@ namespace SistemasOperativos_Obligatorio
             btnReanudar.Enabled = planificador.Pausado;
             btnDetener.Enabled = !planificador.Pausado;
             Text = $"Simulación ({(planificador.Pausado ? "En pausa" : "Corriendo")})";
+            habilitarBtnBloquear();
+            habilitarBtnDesbloquear();
         }
 
         private void FrmSimulacion_Shown(object sender, EventArgs e)
@@ -56,6 +58,7 @@ namespace SistemasOperativos_Obligatorio
             IOrderedEnumerable<Proceso> listos = estado.listos;
             IOrderedEnumerable<Proceso> bloqueados = estado.bloqueados;
             IOrderedEnumerable<Proceso> finalizados = estado.finalizados;
+            List<Proceso> bloqueadosPorUsuario = estado.bloqueadosPorUsuario;
 
             for (int i = 0; i < cpus.Count; i++)
             {
@@ -76,8 +79,10 @@ namespace SistemasOperativos_Obligatorio
                         if (cpu.ProcesoActivo != null)
                         {
                             Proceso p = cpu.ProcesoActivo;
-                            grdProcesosListos.Rows.Add(p.id, p.nombre, p.prioridad, p.duracionCPU,
+                            var fila = new DataGridViewRow() { Tag = p };
+                            fila.CreateCells(grdProcesosListos, p.id, p.nombre, p.prioridad, p.duracionCPU,
                                 p.duracionEs, p.intervaloES, p.PorcentajeCPUCompletado + "%");
+                            grdProcesosListos.Rows.Add(fila);
 
                             grdProcesosListos.Rows[^1].Cells[colEstadoProcesoListo.Name]
                                 .Style.BackColor = Color.Yellow;
@@ -86,8 +91,10 @@ namespace SistemasOperativos_Obligatorio
 
                     listos.ToList().ForEach(p =>
                     {
-                        grdProcesosListos.Rows.Add(p.id, p.nombre, p.prioridad, p.duracionCPU,
+                        var fila = new DataGridViewRow() { Tag = p };
+                        fila.CreateCells(grdProcesosListos, p.id, p.nombre, p.prioridad, p.duracionCPU,
                             p.duracionEs, p.intervaloES, p.PorcentajeCPUCompletado + "%");
+                        grdProcesosListos.Rows.Add(fila);
 
                         grdProcesosListos.Rows[^1].Cells[colEstadoProcesoListo.Name]
                             .Style.BackColor = Color.Orange;
@@ -95,8 +102,10 @@ namespace SistemasOperativos_Obligatorio
 
                     finalizados.ToList().ForEach(p =>
                     {
-                        grdProcesosListos.Rows.Add(p.id, p.nombre, p.prioridad, p.duracionCPU,
+                        var fila = new DataGridViewRow() { Tag = p };
+                        fila.CreateCells(grdProcesosListos, p.id, p.nombre, p.prioridad, p.duracionCPU,
                             p.duracionEs, p.intervaloES, p.PorcentajeCPUCompletado + "%");
+                        grdProcesosListos.Rows.Add(fila);
 
                         grdProcesosListos.Rows[^1].Cells[colEstadoProcesoListo.Name]
                             .Style.BackColor = Color.Green;
@@ -106,18 +115,28 @@ namespace SistemasOperativos_Obligatorio
                     grdProcesosListos.ClearSelection();
                 }, listos, finalizados, cpus);
 
-            grdProcesosBloqueados.Invoke((IOrderedEnumerable<Proceso> bloqueados) =>
+            grdProcesosBloqueados.Invoke((IOrderedEnumerable<Proceso> bloqueados,
+                List<Proceso> bloqueadosPorUsuario) =>
             {
                 grdProcesosBloqueados.Rows.Clear();
+                bloqueadosPorUsuario.ForEach(p =>
+                {
+                    var fila = new DataGridViewRow() { Tag = p };
+                    fila.CreateCells(grdProcesosBloqueados, "#" + p.id, p.nombre, "Usuario",
+                        p.PorcentajeESCompletado + "%");
+                    grdProcesosBloqueados.Rows.Add(fila);
+                });
+
                 bloqueados.ToList().ForEach(p =>
                 {
-                    grdProcesosBloqueados.Rows.Add("#" + p.id, p.nombre,
-                        p.estado == Proceso.Estado.bloqueado ? "E/S" : "Usuario",
+                    grdProcesosBloqueados.Rows.Add("#" + p.id, p.nombre, "E/S",
                         p.PorcentajeESCompletado + "%");
+
+                    grdProcesosBloqueados.Rows[^1].Tag = p;
                 });
 
                 grdProcesosBloqueados.ClearSelection();
-            }, bloqueados);
+            }, bloqueados, bloqueadosPorUsuario);
         }
 
         private void btnReanudar_Click(object sender, EventArgs e)
@@ -128,6 +147,42 @@ namespace SistemasOperativos_Obligatorio
         private void btnDetener_Click(object sender, EventArgs e)
         {
             planificador.Pausado = true;
+        }
+
+        private void btnBloquear_Click(object sender, EventArgs e)
+        {
+            Proceso p = (Proceso) grdProcesosListos.SelectedRows[0].Tag!;
+            planificador.BloquearProceso(p);
+        }
+
+        private void btnDesbloquear_Click(object sender, EventArgs e)
+        {
+            Proceso p = (Proceso) grdProcesosBloqueados.SelectedRows[0].Tag!;
+            planificador.DesbloquearProceso(p);
+        }
+
+        private void habilitarBtnBloquear()
+        {
+            btnBloquear.Enabled = planificador.Pausado
+                && grdProcesosListos.SelectedRows.Count == 1
+                && ((Proceso)grdProcesosListos.SelectedRows[0].Tag!).estado != Proceso.Estado.finalizado;
+        }
+
+        private void habilitarBtnDesbloquear()
+        {
+            btnDesbloquear.Enabled = planificador.Pausado
+                && grdProcesosBloqueados.SelectedRows.Count == 1
+                && ((Proceso)grdProcesosBloqueados.SelectedRows[0].Tag!).estado == Proceso.Estado.bloqueadoPorUsuario;
+        }
+
+        private void grdProcesosListos_SelectionChanged(object sender, EventArgs e)
+        {
+            habilitarBtnBloquear();
+        }
+
+        private void grdProcesosBloqueados_SelectionChanged(object sender, EventArgs e)
+        {
+            habilitarBtnDesbloquear();
         }
     }
 }

@@ -58,6 +58,8 @@ namespace SistemasOperativos_Obligatorio
 
         public abstract void Iniciar();
         public abstract void Pausar();
+        public abstract void BloquearProceso(Proceso p);
+        public abstract void DesbloquearProceso(Proceso p);
         protected abstract void Notificar();
         protected abstract void Notificar(IObservador<Estado> observador);
         protected abstract Estado GenerarEstado();
@@ -67,14 +69,17 @@ namespace SistemasOperativos_Obligatorio
             public IOrderedEnumerable<Proceso> listos;
             public IOrderedEnumerable<Proceso> bloqueados;
             public IOrderedEnumerable<Proceso> finalizados;
+            public List<Proceso> bloqueadosPorUsuario;
             public List<CPU> cpus;
 
             public Estado(IOrderedEnumerable<Proceso> listos, IOrderedEnumerable<Proceso> bloqueados,
-                IOrderedEnumerable<Proceso> finalizados, List<CPU> cpus)
+                IOrderedEnumerable<Proceso> finalizados, List<Proceso> bloqueadosPorUsuario,
+                List<CPU> cpus)
             {
                 this.listos = listos;
                 this.bloqueados = bloqueados;
                 this.finalizados = finalizados;
+                this.bloqueadosPorUsuario = bloqueadosPorUsuario;
                 this.cpus = cpus;
             }
         }

@@ -10,6 +10,7 @@ namespace SistemasOperativos_Obligatorio
 
         private PriorityQueue<Proceso, BCP> colaListos;
         private PriorityQueue<Proceso, BCP> colaBloqueados;
+        private List<Proceso> listaBloqueadosPorUsuario;
         private PriorityQueue<Proceso, BCP> colaFinalizados;
         private Dictionary<Proceso, BCP> bloquesDeControl;
 
@@ -34,10 +35,9 @@ namespace SistemasOperativos_Obligatorio
                 frecuenciaActualizacion.ParteDecimal(3));
 
             this.procesos = procesos;
+            this.listaBloqueadosPorUsuario = new List<Proceso>();
             this.bloquesDeControl = new Dictionary<Proceso, BCP>();
             procesos.ForEach(p => bloquesDeControl.Add(p, new BCP(p)));
-            Comparer<BCP> comparadorPrioridades = Comparer<BCP>.Create((a, b) =>
-                (a.Prioridad - a.Envejecimiento).CompareTo(b.Prioridad - b.Envejecimiento));
 
             this.colaListos = new PriorityQueue<Proceso, BCP>(
                 from p in procesos select (p, bloquesDeControl[p]),
@@ -85,7 +85,6 @@ namespace SistemasOperativos_Obligatorio
             if (haySiguiente && siguiente?.estado == Proceso.Estado.listo)
             {
                 siguiente = colaListos.Dequeue();
-                AsignarQuantum(siguiente);
 
                 procesos.ForEach(p =>
                 {
@@ -116,12 +115,13 @@ namespace SistemasOperativos_Obligatorio
             if (p.intervaloES == TimeSpan.Zero
                 || p.tiempoCPUTranscurrido - p.tiempoCPUTranscurrido.Mod(p.intervaloES) + p.intervaloES > p.duracionCPU)
             {
-                quantum = new [] { TIEMPO_MAXIMO_CPU, p.duracionCPU - p.tiempoCPUTranscurrido }.Min();
+                quantum = new [] { TIEMPO_MAXIMO_CPU, (p.duracionCPU - p.tiempoCPUTranscurrido) / p.cpu!.Velocidad }.Min();
             }
+            // Si realizará alguna operación E/S antes de terminar
             else
             {
                 quantum = new[] { TIEMPO_MAXIMO_CPU,
-                    p.intervaloES - p.tiempoCPUTranscurrido.Mod(p.intervaloES) }.Min();
+                    (p.intervaloES - p.tiempoCPUTranscurrido.Mod(p.intervaloES)) / p.cpu!.Velocidad }.Min();
             }
 
             bloquesDeControl[p].Quantum = quantum;
@@ -149,10 +149,10 @@ namespace SistemasOperativos_Obligatorio
                     tiempoMinimoHastaES = procesosEnEjecucion
                         .Select(p => p.intervaloES == TimeSpan.Zero
                             ? TimeSpan.MaxValue
-                            : p.intervaloES - p.tiempoCPUTranscurrido.Mod(p.intervaloES))
+                            : (p.intervaloES - p.tiempoCPUTranscurrido.Mod(p.intervaloES)) / p.cpu!.Velocidad)
                         .Min();
                     tiempoMinimoHastaFinalizacion = procesosEnEjecucion
-                        .Select(p => p.duracionCPU - p.tiempoCPUTranscurrido)
+                        .Select(p => (p.duracionCPU - p.tiempoCPUTranscurrido) / p.cpu!.Velocidad)
                         .Min();
                 }
 
@@ -183,7 +183,7 @@ namespace SistemasOperativos_Obligatorio
                                                    select cpu.ProcesoActivo;
 
             IEnumerable<Proceso> procesosBloqueados = from bcp in bloquesDeControl.Values
-                                                      where bcp.Proceso.EstaBloqueado
+                                                      where bcp.Estado == Proceso.Estado.bloqueado
                                                       select bcp.Proceso;
             
             
@@ -213,7 +213,7 @@ namespace SistemasOperativos_Obligatorio
                 {
                     Proceso p = cpu.ProcesoActivo;
 
-                    p.tiempoCPUTranscurrido += deltaT;
+                    p.tiempoCPUTranscurrido += deltaT * cpu.Velocidad;
                     bloquesDeControl[p].Quantum -= deltaT;
 
                     // Si transcurrió todo el tiempo que el proceso indica que ocupa la CPU
@@ -263,22 +263,82 @@ namespace SistemasOperativos_Obligatorio
                 cpu.ProcesoActivo.cpu = null;
                 cpu.ProcesoActivo.estado = nuevoEstado;
                 bloquesDeControl[cpu.ProcesoActivo].Quantum = TimeSpan.Zero;
+                PriorityQueue<Proceso, BCP> colaDestino;
+
                 switch (nuevoEstado)
                 {
                     case Proceso.Estado.listo:
-                        colaListos.Enqueue(cpu.ProcesoActivo, bloquesDeControl[cpu.ProcesoActivo]);
+                        colaDestino = colaListos;
                         break;
 
                     case Proceso.Estado.bloqueado:
-                        colaBloqueados.Enqueue(cpu.ProcesoActivo, bloquesDeControl[cpu.ProcesoActivo]);
+                        colaDestino = colaBloqueados;
+                        break;
+
+                    case Proceso.Estado.bloqueadoPorUsuario:
+                        colaDestino = null;
+                        listaBloqueadosPorUsuario.Add(cpu.ProcesoActivo);
                         break;
 
                     case Proceso.Estado.finalizado:
-                        colaFinalizados.Enqueue(cpu.ProcesoActivo, bloquesDeControl[cpu.ProcesoActivo]);
+                        colaDestino = colaFinalizados;
                         break;
+
+                    default:
+                        throw new ArgumentException("No se asignó un nuevo estado válido al proceso que deja el CPU.");
+                }
+
+                if (colaDestino != null)
+                {
+                    colaDestino.Enqueue(cpu.ProcesoActivo, bloquesDeControl[cpu.ProcesoActivo]);
                 }
             }
             cpu.ProcesoActivo = MoverLaCola();
+            if (cpu.ProcesoActivo != null)
+            {
+                AsignarQuantum(cpu.ProcesoActivo);
+            }
+        }
+
+        public override void BloquearProceso(Proceso p)
+        {
+            if (p.estado == Proceso.Estado.enEjecucion)
+            {
+                ReasignarCPU(p.Cpu!, Proceso.Estado.bloqueadoPorUsuario);
+            }
+            else
+            {
+                List<Proceso> procesosListos = new List<Proceso>();
+                Proceso procesoEnCola;
+                do
+                {
+                    procesoEnCola = colaListos.Dequeue();
+                    procesosListos.Add(procesoEnCola);
+                }
+                while (procesoEnCola != p);
+
+                p.estado = Proceso.Estado.bloqueadoPorUsuario;
+                listaBloqueadosPorUsuario.Add(p);
+
+                procesosListos.ForEach(procesoEnCola =>
+                {
+                    if (procesoEnCola != p)
+                    {
+                        colaListos.Enqueue(procesoEnCola, bloquesDeControl[procesoEnCola]);
+                    }
+                });
+            }
+
+            Notificar();
+        }
+
+        public override void DesbloquearProceso(Proceso p)
+        {
+            p.estado = Proceso.Estado.listo;
+            listaBloqueadosPorUsuario.Remove(p);
+            colaListos.Enqueue(p, bloquesDeControl[p]);
+
+            Notificar();
         }
 
         protected override void Notificar()
@@ -307,6 +367,7 @@ namespace SistemasOperativos_Obligatorio
                     .OrderBy(p => bloquesDeControl[p], colaBloqueados.Comparer),
                 colaFinalizados.UnorderedItems.ToList().Select(par => par.Element)
                     .OrderBy(p => bloquesDeControl[p], colaFinalizados.Comparer),
+                listaBloqueadosPorUsuario,
                 cpus);
         }
     }

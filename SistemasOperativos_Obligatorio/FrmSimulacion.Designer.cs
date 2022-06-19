@@ -47,6 +47,8 @@
             this.lblProcesosBloqueados = new System.Windows.Forms.Label();
             this.btnReanudar = new System.Windows.Forms.Button();
             this.btnDetener = new System.Windows.Forms.Button();
+            this.btnBloquear = new System.Windows.Forms.Button();
+            this.btnDesbloquear = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesadores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesosListos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesosBloqueados)).BeginInit();
@@ -91,12 +93,15 @@
             this.colCompletadoProcesoListo,
             this.colEstadoProcesoListo});
             this.grdProcesosListos.Location = new System.Drawing.Point(12, 139);
+            this.grdProcesosListos.MultiSelect = false;
             this.grdProcesosListos.Name = "grdProcesosListos";
             this.grdProcesosListos.ReadOnly = true;
             this.grdProcesosListos.RowHeadersVisible = false;
             this.grdProcesosListos.RowTemplate.Height = 25;
+            this.grdProcesosListos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdProcesosListos.Size = new System.Drawing.Size(493, 299);
             this.grdProcesosListos.TabIndex = 1;
+            this.grdProcesosListos.SelectionChanged += new System.EventHandler(this.grdProcesosListos_SelectionChanged);
             // 
             // colIDProcesoListo
             // 
@@ -169,12 +174,15 @@
             this.colMotiboProcesoBloqueado,
             this.colProcesoBloqueadoCompletado});
             this.grdProcesosBloqueados.Location = new System.Drawing.Point(511, 139);
+            this.grdProcesosBloqueados.MultiSelect = false;
             this.grdProcesosBloqueados.Name = "grdProcesosBloqueados";
             this.grdProcesosBloqueados.ReadOnly = true;
             this.grdProcesosBloqueados.RowHeadersVisible = false;
             this.grdProcesosBloqueados.RowTemplate.Height = 25;
+            this.grdProcesosBloqueados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.grdProcesosBloqueados.Size = new System.Drawing.Size(277, 146);
             this.grdProcesosBloqueados.TabIndex = 3;
+            this.grdProcesosBloqueados.SelectionChanged += new System.EventHandler(this.grdProcesosBloqueados_SelectionChanged);
             // 
             // colIDProcesoBloqueado
             // 
@@ -232,11 +240,37 @@
             this.btnDetener.UseVisualStyleBackColor = true;
             this.btnDetener.Click += new System.EventHandler(this.btnDetener_Click);
             // 
+            // btnBloquear
+            // 
+            this.btnBloquear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnBloquear.Enabled = false;
+            this.btnBloquear.Location = new System.Drawing.Point(550, 317);
+            this.btnBloquear.Name = "btnBloquear";
+            this.btnBloquear.Size = new System.Drawing.Size(215, 23);
+            this.btnBloquear.TabIndex = 7;
+            this.btnBloquear.Text = "Bloquear proceso";
+            this.btnBloquear.UseVisualStyleBackColor = true;
+            this.btnBloquear.Click += new System.EventHandler(this.btnBloquear_Click);
+            // 
+            // btnDesbloquear
+            // 
+            this.btnDesbloquear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDesbloquear.Enabled = false;
+            this.btnDesbloquear.Location = new System.Drawing.Point(550, 346);
+            this.btnDesbloquear.Name = "btnDesbloquear";
+            this.btnDesbloquear.Size = new System.Drawing.Size(215, 23);
+            this.btnDesbloquear.TabIndex = 8;
+            this.btnDesbloquear.Text = "Desbloquear proceso";
+            this.btnDesbloquear.UseVisualStyleBackColor = true;
+            this.btnDesbloquear.Click += new System.EventHandler(this.btnDesbloquear_Click);
+            // 
             // FrmSimulacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnDesbloquear);
+            this.Controls.Add(this.btnBloquear);
             this.Controls.Add(this.btnDetener);
             this.Controls.Add(this.btnReanudar);
             this.Controls.Add(this.lblProcesosBloqueados);
@@ -278,5 +312,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colProcesoBloqueadoCompletado;
         private System.Windows.Forms.Button btnReanudar;
         private System.Windows.Forms.Button btnDetener;
+        private System.Windows.Forms.Button btnBloquear;
+        private System.Windows.Forms.Button btnDesbloquear;
     }
 }

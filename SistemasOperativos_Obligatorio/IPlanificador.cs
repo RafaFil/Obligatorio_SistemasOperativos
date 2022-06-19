@@ -16,5 +16,8 @@ namespace SistemasOperativos_Obligatorio
 
         bool Pausado { get; set; }
         event EventHandler PausadoChanged;
+
+        void BloquearProceso(Proceso p);
+        void DesbloquearProceso(Proceso p);
     }
 }
