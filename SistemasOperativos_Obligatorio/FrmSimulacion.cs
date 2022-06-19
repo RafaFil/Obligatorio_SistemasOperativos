@@ -80,8 +80,9 @@ namespace SistemasOperativos_Obligatorio
                         {
                             Proceso p = cpu.ProcesoActivo;
                             var fila = new DataGridViewRow() { Tag = p };
-                            fila.CreateCells(grdProcesosListos, p.id, p.nombre, p.prioridad, p.duracionCPU,
-                                p.duracionEs, p.intervaloES, p.PorcentajeCPUCompletado + "%");
+                            fila.CreateCells(grdProcesosListos, p.id, p.esDeSo,
+                                p.nombre, p.prioridad, p.duracionCPU, p.duracionEs, p.intervaloES,
+                                p.PorcentajeCPUCompletado + "%");
                             grdProcesosListos.Rows.Add(fila);
 
                             grdProcesosListos.Rows[^1].Cells[colEstadoProcesoListo.Name]
@@ -92,8 +93,9 @@ namespace SistemasOperativos_Obligatorio
                     listos.ToList().ForEach(p =>
                     {
                         var fila = new DataGridViewRow() { Tag = p };
-                        fila.CreateCells(grdProcesosListos, p.id, p.nombre, p.prioridad, p.duracionCPU,
-                            p.duracionEs, p.intervaloES, p.PorcentajeCPUCompletado + "%");
+                        fila.CreateCells(grdProcesosListos, p.id, p.esDeSo,
+                            p.nombre, p.prioridad, p.duracionCPU, p.duracionEs, p.intervaloES,
+                            p.PorcentajeCPUCompletado + "%");
                         grdProcesosListos.Rows.Add(fila);
 
                         grdProcesosListos.Rows[^1].Cells[colEstadoProcesoListo.Name]
@@ -103,8 +105,9 @@ namespace SistemasOperativos_Obligatorio
                     finalizados.ToList().ForEach(p =>
                     {
                         var fila = new DataGridViewRow() { Tag = p };
-                        fila.CreateCells(grdProcesosListos, p.id, p.nombre, p.prioridad, p.duracionCPU,
-                            p.duracionEs, p.intervaloES, p.PorcentajeCPUCompletado + "%");
+                        fila.CreateCells(grdProcesosListos, p.id, p.esDeSo,
+                            p.nombre, p.prioridad, p.duracionCPU, p.duracionEs, p.intervaloES,
+                            p.PorcentajeCPUCompletado + "%");
                         grdProcesosListos.Rows.Add(fila);
 
                         grdProcesosListos.Rows[^1].Cells[colEstadoProcesoListo.Name]

@@ -30,14 +30,6 @@
         {
             this.grdProcesadores = new System.Windows.Forms.DataGridView();
             this.grdProcesosListos = new System.Windows.Forms.DataGridView();
-            this.colIDProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombreProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPrioridadProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDuracionCPUProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDuracionESProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colIntervaloESProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCompletadoProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colEstadoProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblProcesosListos = new System.Windows.Forms.Label();
             this.grdProcesosBloqueados = new System.Windows.Forms.DataGridView();
             this.colIDProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -49,6 +41,15 @@
             this.btnDetener = new System.Windows.Forms.Button();
             this.btnBloquear = new System.Windows.Forms.Button();
             this.btnDesbloquear = new System.Windows.Forms.Button();
+            this.colIDProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSOProcesoListo = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colNombreProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPrioridadProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDuracionCPUProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDuracionESProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colIntervaloESProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCompletadoProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEstadoProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesadores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesosListos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesosBloqueados)).BeginInit();
@@ -85,6 +86,7 @@
             this.grdProcesosListos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grdProcesosListos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colIDProcesoListo,
+            this.colSOProcesoListo,
             this.colNombreProcesoListo,
             this.colPrioridadProcesoListo,
             this.colDuracionCPUProcesoListo,
@@ -102,54 +104,6 @@
             this.grdProcesosListos.Size = new System.Drawing.Size(493, 299);
             this.grdProcesosListos.TabIndex = 1;
             this.grdProcesosListos.SelectionChanged += new System.EventHandler(this.grdProcesosListos_SelectionChanged);
-            // 
-            // colIDProcesoListo
-            // 
-            this.colIDProcesoListo.HeaderText = "ID";
-            this.colIDProcesoListo.Name = "colIDProcesoListo";
-            this.colIDProcesoListo.ReadOnly = true;
-            // 
-            // colNombreProcesoListo
-            // 
-            this.colNombreProcesoListo.HeaderText = "Nombre";
-            this.colNombreProcesoListo.Name = "colNombreProcesoListo";
-            this.colNombreProcesoListo.ReadOnly = true;
-            // 
-            // colPrioridadProcesoListo
-            // 
-            this.colPrioridadProcesoListo.HeaderText = "Prioridad";
-            this.colPrioridadProcesoListo.Name = "colPrioridadProcesoListo";
-            this.colPrioridadProcesoListo.ReadOnly = true;
-            // 
-            // colDuracionCPUProcesoListo
-            // 
-            this.colDuracionCPUProcesoListo.HeaderText = "Uso CPU";
-            this.colDuracionCPUProcesoListo.Name = "colDuracionCPUProcesoListo";
-            this.colDuracionCPUProcesoListo.ReadOnly = true;
-            // 
-            // colDuracionESProcesoListo
-            // 
-            this.colDuracionESProcesoListo.HeaderText = "Duración E/S";
-            this.colDuracionESProcesoListo.Name = "colDuracionESProcesoListo";
-            this.colDuracionESProcesoListo.ReadOnly = true;
-            // 
-            // colIntervaloESProcesoListo
-            // 
-            this.colIntervaloESProcesoListo.HeaderText = "Intervalo E/S";
-            this.colIntervaloESProcesoListo.Name = "colIntervaloESProcesoListo";
-            this.colIntervaloESProcesoListo.ReadOnly = true;
-            // 
-            // colCompletadoProcesoListo
-            // 
-            this.colCompletadoProcesoListo.HeaderText = "Completado";
-            this.colCompletadoProcesoListo.Name = "colCompletadoProcesoListo";
-            this.colCompletadoProcesoListo.ReadOnly = true;
-            // 
-            // colEstadoProcesoListo
-            // 
-            this.colEstadoProcesoListo.HeaderText = "Estado";
-            this.colEstadoProcesoListo.Name = "colEstadoProcesoListo";
-            this.colEstadoProcesoListo.ReadOnly = true;
             // 
             // lblProcesosListos
             // 
@@ -264,6 +218,62 @@
             this.btnDesbloquear.UseVisualStyleBackColor = true;
             this.btnDesbloquear.Click += new System.EventHandler(this.btnDesbloquear_Click);
             // 
+            // colIDProcesoListo
+            // 
+            this.colIDProcesoListo.HeaderText = "ID";
+            this.colIDProcesoListo.Name = "colIDProcesoListo";
+            this.colIDProcesoListo.ReadOnly = true;
+            // 
+            // colSOProcesoListo
+            // 
+            this.colSOProcesoListo.HeaderText = "SO";
+            this.colSOProcesoListo.Name = "colSOProcesoListo";
+            this.colSOProcesoListo.ReadOnly = true;
+            this.colSOProcesoListo.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.colSOProcesoListo.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // colNombreProcesoListo
+            // 
+            this.colNombreProcesoListo.HeaderText = "Nombre";
+            this.colNombreProcesoListo.Name = "colNombreProcesoListo";
+            this.colNombreProcesoListo.ReadOnly = true;
+            // 
+            // colPrioridadProcesoListo
+            // 
+            this.colPrioridadProcesoListo.HeaderText = "Prioridad";
+            this.colPrioridadProcesoListo.Name = "colPrioridadProcesoListo";
+            this.colPrioridadProcesoListo.ReadOnly = true;
+            // 
+            // colDuracionCPUProcesoListo
+            // 
+            this.colDuracionCPUProcesoListo.HeaderText = "Uso CPU";
+            this.colDuracionCPUProcesoListo.Name = "colDuracionCPUProcesoListo";
+            this.colDuracionCPUProcesoListo.ReadOnly = true;
+            // 
+            // colDuracionESProcesoListo
+            // 
+            this.colDuracionESProcesoListo.HeaderText = "Duración E/S";
+            this.colDuracionESProcesoListo.Name = "colDuracionESProcesoListo";
+            this.colDuracionESProcesoListo.ReadOnly = true;
+            // 
+            // colIntervaloESProcesoListo
+            // 
+            this.colIntervaloESProcesoListo.HeaderText = "Intervalo E/S";
+            this.colIntervaloESProcesoListo.Name = "colIntervaloESProcesoListo";
+            this.colIntervaloESProcesoListo.ReadOnly = true;
+            // 
+            // colCompletadoProcesoListo
+            // 
+            this.colCompletadoProcesoListo.HeaderText = "Completado";
+            this.colCompletadoProcesoListo.Name = "colCompletadoProcesoListo";
+            this.colCompletadoProcesoListo.ReadOnly = true;
+            // 
+            // colEstadoProcesoListo
+            // 
+            this.colEstadoProcesoListo.HeaderText = "Estado";
+            this.colEstadoProcesoListo.Name = "colEstadoProcesoListo";
+            this.colEstadoProcesoListo.ReadOnly = true;
+            // 
             // FrmSimulacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -298,14 +308,6 @@
         private System.Windows.Forms.Label lblProcesosListos;
         private System.Windows.Forms.DataGridView grdProcesosBloqueados;
         private System.Windows.Forms.Label lblProcesosBloqueados;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colIDProcesoListo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombreProcesoListo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colPrioridadProcesoListo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDuracionCPUProcesoListo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDuracionESProcesoListo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colIntervaloESProcesoListo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colCompletadoProcesoListo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colEstadoProcesoListo;
         private System.Windows.Forms.DataGridViewTextBoxColumn colIDProcesoBloqueado;
         private System.Windows.Forms.DataGridViewTextBoxColumn colNombreProcesoBloqueado;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMotiboProcesoBloqueado;
@@ -314,5 +316,14 @@
         private System.Windows.Forms.Button btnDetener;
         private System.Windows.Forms.Button btnBloquear;
         private System.Windows.Forms.Button btnDesbloquear;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colIDProcesoListo;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colSOProcesoListo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNombreProcesoListo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPrioridadProcesoListo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDuracionCPUProcesoListo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDuracionESProcesoListo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colIntervaloESProcesoListo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCompletadoProcesoListo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colEstadoProcesoListo;
     }
 }

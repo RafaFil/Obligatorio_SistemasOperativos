@@ -149,6 +149,7 @@ namespace SistemasOperativos_Obligatorio
         {
             procesosIngresados.Clear();
             cpusDisponibles.Clear();
+            btnAgregarCPU.Enabled = MAXIMO_CPUS > cpusDisponibles.Count;
             actualizarProcesosIngresados();
             actualizarCPUsDisponibles();
         }
