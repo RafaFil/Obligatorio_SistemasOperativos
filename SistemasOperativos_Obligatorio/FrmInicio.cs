@@ -88,9 +88,12 @@ namespace SistemasOperativos_Obligatorio
             openFileDialog1.ShowDialog();
 
             string ruta = openFileDialog1.FileName;
-            procesosIngresados.AddRange(CargaMasivaDatos.CargarProcesos(ruta));
-            MessageBox.Show(ruta);
-            actualizarProcesosIngresados();
+            if (ruta != "")
+            {
+                procesosIngresados.AddRange(CargaMasivaDatos.CargarProcesos(ruta));
+                MessageBox.Show(ruta);
+                actualizarProcesosIngresados();
+            }
         }
 
         private void btnAgregarProceso_Click(object sender, EventArgs e)
