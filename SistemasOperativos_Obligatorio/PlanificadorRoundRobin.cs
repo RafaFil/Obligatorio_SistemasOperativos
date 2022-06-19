@@ -237,7 +237,7 @@ namespace SistemasOperativos_Obligatorio
                     bloquesDeControl[p].Quantum -= deltaT;
 
                     // Si transcurrió todo el tiempo que el proceso indica que ocupa la CPU
-                    if (p.tiempoCPUTranscurrido == p.duracionCPU)
+                    if (p.tiempoCPUTranscurrido >= p.duracionCPU)
                     {
                         ReasignarCPU(cpu, Proceso.Estado.finalizado);
                     }
@@ -251,7 +251,7 @@ namespace SistemasOperativos_Obligatorio
                     }
 
                     // Si se le acabó el quantum y al proceso le va a ser expropiado el CPU
-                    else if (bloquesDeControl[p].Quantum == TimeSpan.Zero)
+                    else if (bloquesDeControl[p].Quantum <= TimeSpan.Zero)
                     {
                         ReasignarCPU(cpu, Proceso.Estado.listo);
                     }
