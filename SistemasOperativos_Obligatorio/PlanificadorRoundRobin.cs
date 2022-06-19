@@ -44,6 +44,27 @@ namespace SistemasOperativos_Obligatorio
                 Comparer<BCP>.Create((a, b) =>
                 (a.Prioridad - a.Envejecimiento).CompareTo(b.Prioridad - b.Envejecimiento)));
 
+            this.colaListos = new PriorityQueue<Proceso, BCP>(
+                from p in procesos select (p, bloquesDeControl[p]),
+                Comparer<BCP>.Create((a, b) =>
+                {
+                    if (a.Proceso.esDeSo == b.Proceso.esDeSo)
+                    {
+                        return (a.Prioridad - a.Envejecimiento).CompareTo(b.Prioridad - b.Envejecimiento);
+                    }
+                    else
+                    {
+                        if (a.Proceso.esDeSo)
+                        {
+                            return -1;
+                        }
+                        else
+                        {
+                            return 1;
+                        }
+                    }
+                }));
+
             this.colaBloqueados = new PriorityQueue<Proceso, BCP>(
                 Comparer<BCP>.Create((a, b) => a.DuracionESRestante.CompareTo(b.DuracionESRestante)));
             
