@@ -42,11 +42,6 @@ namespace SistemasOperativos_Obligatorio
             this.colaListos = new PriorityQueue<Proceso, BCP>(
                 from p in procesos select (p, bloquesDeControl[p]),
                 Comparer<BCP>.Create((a, b) =>
-                (a.Prioridad - a.Envejecimiento).CompareTo(b.Prioridad - b.Envejecimiento)));
-
-            this.colaListos = new PriorityQueue<Proceso, BCP>(
-                from p in procesos select (p, bloquesDeControl[p]),
-                Comparer<BCP>.Create((a, b) =>
                 {
                     if (a.Proceso.esDeSo == b.Proceso.esDeSo)
                     {
@@ -64,7 +59,7 @@ namespace SistemasOperativos_Obligatorio
                         }
                     }
                 }));
-
+            
             this.colaBloqueados = new PriorityQueue<Proceso, BCP>(
                 Comparer<BCP>.Create((a, b) => a.DuracionESRestante.CompareTo(b.DuracionESRestante)));
             
@@ -75,6 +70,10 @@ namespace SistemasOperativos_Obligatorio
             foreach (CPU cpu in cpus)
             {
                 cpu.ProcesoActivo = MoverLaCola();
+                if (cpu.ProcesoActivo != null)
+                {
+                    AsignarQuantum(cpu.ProcesoActivo);
+                }
             }
 
             Notificar();
@@ -111,7 +110,7 @@ namespace SistemasOperativos_Obligatorio
                 {
                     if (bloquesDeControl[p].Estado == Proceso.Estado.listo)
                     {
-                        bloquesDeControl[p].Envejecimiento--;
+                        bloquesDeControl[p].Envejecimiento++;
                     }
                 });
                 bloquesDeControl[siguiente].Envejecimiento = 0;
@@ -214,9 +213,9 @@ namespace SistemasOperativos_Obligatorio
                 p.tiempoESTranscurrido += deltaT;
             }
 
-            (Proceso?, BCP?) primerPar = new (null, null);
-            while (colaBloqueados.TryPeek(out primerPar.Item1, out primerPar.Item2)
-                && primerPar.Item1.tiempoESTranscurrido == primerPar.Item1.duracionEs)
+            Proceso? primerProceso;
+            while (colaBloqueados.TryPeek(out primerProceso, out _)
+                && primerProceso.tiempoESTranscurrido == primerProceso.duracionEs)
             {
                 Proceso p = colaBloqueados.Dequeue();
                 p.estado = Proceso.Estado.listo;
