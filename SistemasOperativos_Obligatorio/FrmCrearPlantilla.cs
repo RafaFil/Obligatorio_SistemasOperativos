@@ -76,7 +76,7 @@ namespace SistemasOperativos_Obligatorio
             txtNombre.Text = pp.nombre;
             numDuracionCPU.Value = (int) pp.duracionCPU.TotalSeconds;
             numDuracionES.Value = (int) pp.duracionES.TotalSeconds;
-            numIntervaloES.Value = (int) pp.intervaloEs.TotalSeconds;
+            numIntervaloES.Value = (int) (pp.duracionES > TimeSpan.Zero ? pp.intervaloEs.TotalSeconds : 1);
             chkEsDeSO.Checked = pp.esDeSo;
         }
 
