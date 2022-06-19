@@ -37,7 +37,7 @@ namespace SistemasOperativos_Obligatorio
 
         private string VelocidadDoubleToString(double velocidad)
         {
-            return (velocidad * 100).ToString() + "%";
+            return (Math.Round(velocidad * 100)).ToString() + "%";
         }
 
         private void btnCrearPlantilla_Click(object sender, EventArgs e)

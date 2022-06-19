@@ -13,24 +13,35 @@ namespace SistemasOperativos_Obligatorio
     public partial class FrmSimulacion : Form, IObservador<PlanificadorBase.Estado>
     {
         private IPlanificador planificador;
+        private const double FRECUENCIA_ACTUALIZACION = 0.1;
+        private List<Proceso> procesos;
+        private List<CPU> cpus;
 
         public FrmSimulacion(List<Proceso> procesos, List<CPU> cpus)
         {
             InitializeComponent();
 
-            planificador = new PlanificadorRoundRobin(procesos, cpus, 0.1);
-            planificador.PausadoChanged += Planificador_PausadoChanged;
+            this.procesos = procesos;
+            this.cpus = cpus;
             foreach (CPU cpu in cpus)
             {
                 grdProcesadores.Columns.Add(new DataGridViewTextBoxColumn());
             }
             grdProcesadores.Rows.Add(3);
+            grdProcesadores.Rows[0].Height = grdProcesadores.Height - grdProcesadores.Rows[0].Height * 2;
         }
 
         private void FrmSimulacion_Load(object sender, EventArgs e)
         {
-            planificador.Pausado = false;
+            InicializarPlanificador();
+        }
+
+        private void InicializarPlanificador()
+        {
+            planificador = new PlanificadorRoundRobin(procesos, cpus, FRECUENCIA_ACTUALIZACION);
+            planificador.PausadoChanged += Planificador_PausadoChanged;
             planificador.VerComoMueveLaCola(this);
+            planificador.Pausado = false;
         }
 
         private void Planificador_PausadoChanged(object sender, EventArgs e)
@@ -59,6 +70,12 @@ namespace SistemasOperativos_Obligatorio
             IOrderedEnumerable<Proceso> bloqueados = estado.bloqueados;
             IOrderedEnumerable<Proceso> finalizados = estado.finalizados;
             List<Proceso> bloqueadosPorUsuario = estado.bloqueadosPorUsuario;
+
+            bool terminado = !cpus.Select(cpu => cpu.ProcesoActivo).Where(p => p != null)
+                .Union(listos).Union(bloqueados).Union(bloqueadosPorUsuario).Any();
+            btnDetener.Invoke((bool terminado) => btnDetener.Visible = !terminado, terminado);
+            btnReanudar.Invoke((bool terminado) => btnReanudar.Visible = !terminado, terminado);
+            btnReiniciar.Invoke((bool terminado) => btnReiniciar.Visible = terminado, terminado);
 
             for (int i = 0; i < cpus.Count; i++)
             {
@@ -186,6 +203,17 @@ namespace SistemasOperativos_Obligatorio
         private void grdProcesosBloqueados_SelectionChanged(object sender, EventArgs e)
         {
             habilitarBtnDesbloquear();
+        }
+
+        private void btnReiniciar_Click(object sender, EventArgs e)
+        {
+            procesos.ForEach(p =>
+            {
+                p.estado = Proceso.Estado.listo;
+                p.tiempoCPUTranscurrido = TimeSpan.Zero;
+                p.tiempoESTranscurrido = TimeSpan.Zero;
+            });
+            InicializarPlanificador();
         }
     }
 }

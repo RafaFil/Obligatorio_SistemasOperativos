@@ -56,10 +56,10 @@ namespace SistemasOperativos_Obligatorio
         /// <summary>
         /// Devuelve una representación textual de este CPU.
         /// </summary>
-        /// <returns>la representación textyal de este CPU</returns>
+        /// <returns>la representación textual de este CPU</returns>
         public override string ToString()
         {
-            return $"CPU {Id} @ {Velocidad * 100}%";
+            return $"CPU {Id} @ {Math.Round(Velocidad * 100)}%";
         }
     }
 }
