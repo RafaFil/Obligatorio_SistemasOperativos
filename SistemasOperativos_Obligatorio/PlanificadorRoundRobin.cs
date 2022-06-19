@@ -58,19 +58,20 @@ namespace SistemasOperativos_Obligatorio
 
             Notificar();
 
-            siguienteActualizacion = new Timer(DuracionSiguienteTimer.TotalMilliseconds);
+            siguienteActualizacion = new Timer();
             siguienteActualizacion.Elapsed += ActualizarEstado;
             siguienteActualizacion.AutoReset = false;
         }
 
         public override void Iniciar()
         {
+            siguienteActualizacion.Interval = DuracionSiguienteTimer.TotalMilliseconds;
             siguienteActualizacion.Start();
         }
 
         public override void Pausar()
         {
-
+            siguienteActualizacion.Stop();
         }
 
         /// <summary>

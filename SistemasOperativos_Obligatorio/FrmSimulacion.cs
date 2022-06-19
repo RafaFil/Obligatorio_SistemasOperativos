@@ -19,6 +19,7 @@ namespace SistemasOperativos_Obligatorio
             InitializeComponent();
 
             planificador = new PlanificadorRoundRobin(procesos, cpus, 0.1);
+            planificador.PausadoChanged += Planificador_PausadoChanged;
             foreach (CPU cpu in cpus)
             {
                 grdProcesadores.Columns.Add(new DataGridViewTextBoxColumn());
@@ -28,8 +29,15 @@ namespace SistemasOperativos_Obligatorio
 
         private void FrmSimulacion_Load(object sender, EventArgs e)
         {
-            planificador.Iniciar();
+            planificador.Pausado = false;
             planificador.VerComoMueveLaCola(this);
+        }
+
+        private void Planificador_PausadoChanged(object sender, EventArgs e)
+        {
+            btnReanudar.Enabled = planificador.Pausado;
+            btnDetener.Enabled = !planificador.Pausado;
+            Text = $"Simulación ({(planificador.Pausado ? "En pausa" : "Corriendo")})";
         }
 
         private void FrmSimulacion_Shown(object sender, EventArgs e)
@@ -110,6 +118,16 @@ namespace SistemasOperativos_Obligatorio
 
                 grdProcesosBloqueados.ClearSelection();
             }, bloqueados);
+        }
+
+        private void btnReanudar_Click(object sender, EventArgs e)
+        {
+            planificador.Pausado = false;
+        }
+
+        private void btnDetener_Click(object sender, EventArgs e)
+        {
+            planificador.Pausado = true;
         }
     }
 }

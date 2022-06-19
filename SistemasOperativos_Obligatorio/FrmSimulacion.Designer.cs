@@ -40,11 +40,13 @@
             this.colEstadoProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblProcesosListos = new System.Windows.Forms.Label();
             this.grdProcesosBloqueados = new System.Windows.Forms.DataGridView();
-            this.lblProcesosBloqueados = new System.Windows.Forms.Label();
             this.colIDProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colNombreProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colMotiboProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colProcesoBloqueadoCompletado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.lblProcesosBloqueados = new System.Windows.Forms.Label();
+            this.btnReanudar = new System.Windows.Forms.Button();
+            this.btnDetener = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesadores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesosListos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesosBloqueados)).BeginInit();
@@ -174,16 +176,6 @@
             this.grdProcesosBloqueados.Size = new System.Drawing.Size(277, 146);
             this.grdProcesosBloqueados.TabIndex = 3;
             // 
-            // lblProcesosBloqueados
-            // 
-            this.lblProcesosBloqueados.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblProcesosBloqueados.AutoSize = true;
-            this.lblProcesosBloqueados.Location = new System.Drawing.Point(511, 121);
-            this.lblProcesosBloqueados.Name = "lblProcesosBloqueados";
-            this.lblProcesosBloqueados.Size = new System.Drawing.Size(119, 15);
-            this.lblProcesosBloqueados.TabIndex = 4;
-            this.lblProcesosBloqueados.Text = "Procesos bloqueados";
-            // 
             // colIDProcesoBloqueado
             // 
             this.colIDProcesoBloqueado.HeaderText = "ID";
@@ -208,11 +200,45 @@
             this.colProcesoBloqueadoCompletado.Name = "colProcesoBloqueadoCompletado";
             this.colProcesoBloqueadoCompletado.ReadOnly = true;
             // 
+            // lblProcesosBloqueados
+            // 
+            this.lblProcesosBloqueados.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblProcesosBloqueados.AutoSize = true;
+            this.lblProcesosBloqueados.Location = new System.Drawing.Point(511, 121);
+            this.lblProcesosBloqueados.Name = "lblProcesosBloqueados";
+            this.lblProcesosBloqueados.Size = new System.Drawing.Size(119, 15);
+            this.lblProcesosBloqueados.TabIndex = 4;
+            this.lblProcesosBloqueados.Text = "Procesos bloqueados";
+            // 
+            // btnReanudar
+            // 
+            this.btnReanudar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReanudar.Location = new System.Drawing.Point(550, 402);
+            this.btnReanudar.Name = "btnReanudar";
+            this.btnReanudar.Size = new System.Drawing.Size(97, 36);
+            this.btnReanudar.TabIndex = 5;
+            this.btnReanudar.Text = "Reanudar";
+            this.btnReanudar.UseVisualStyleBackColor = true;
+            this.btnReanudar.Click += new System.EventHandler(this.btnReanudar_Click);
+            // 
+            // btnDetener
+            // 
+            this.btnDetener.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDetener.Location = new System.Drawing.Point(671, 402);
+            this.btnDetener.Name = "btnDetener";
+            this.btnDetener.Size = new System.Drawing.Size(94, 36);
+            this.btnDetener.TabIndex = 6;
+            this.btnDetener.Text = "Detener";
+            this.btnDetener.UseVisualStyleBackColor = true;
+            this.btnDetener.Click += new System.EventHandler(this.btnDetener_Click);
+            // 
             // FrmSimulacion
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnDetener);
+            this.Controls.Add(this.btnReanudar);
             this.Controls.Add(this.lblProcesosBloqueados);
             this.Controls.Add(this.grdProcesosBloqueados);
             this.Controls.Add(this.lblProcesosListos);
@@ -250,5 +276,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colNombreProcesoBloqueado;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMotiboProcesoBloqueado;
         private System.Windows.Forms.DataGridViewTextBoxColumn colProcesoBloqueadoCompletado;
+        private System.Windows.Forms.Button btnReanudar;
+        private System.Windows.Forms.Button btnDetener;
     }
 }

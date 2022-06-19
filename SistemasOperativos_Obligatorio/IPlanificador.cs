@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace SistemasOperativos_Obligatorio
@@ -12,5 +13,8 @@ namespace SistemasOperativos_Obligatorio
         /// Pausa la ejecución de los procesos asignados a este planificador.
         /// </summary>
         void Pausar();
+
+        bool Pausado { get; set; }
+        event EventHandler PausadoChanged;
     }
 }

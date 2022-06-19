@@ -9,6 +9,30 @@ namespace SistemasOperativos_Obligatorio
     public abstract class PlanificadorBase : IPlanificador
     {
         protected List<IObservador<Estado>> observadores;
+        protected bool pausado = true;
+
+        public bool Pausado
+        {
+            get => pausado;
+            set
+            {
+                if (value != pausado)
+                {
+                    pausado = value;
+                    PausadoChanged.Invoke(this, EventArgs.Empty);
+                    if (pausado)
+                    {
+                        Pausar();
+                    }
+                    else
+                    {
+                        Iniciar();
+                    }
+                }
+            }
+        }
+
+        public event EventHandler PausadoChanged;
 
         public PlanificadorBase()
         {
