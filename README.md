@@ -23,7 +23,7 @@ Poder insertar procesos ya sea del S.O. como de usuario indicando:<br>
 
 # Descarga
 
-[![Descargar](./docs/images/descargar.jpg)](https://github.com/RafaFil/Obligatorio_SistemasOperativos/releases/download/v1.0.0/bin.zip)
+[![Descargar](./docs/images/descargar.jpg = 250 x 100)](https://github.com/RafaFil/Obligatorio_SistemasOperativos/releases/download/v1.0.0/bin.zip)
 
-[![Descargar](./docs/images/descargar.jpg)](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)
+[![Descargar](./docs/images/descargar.jpg = 250 x 100)](https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley)
 
