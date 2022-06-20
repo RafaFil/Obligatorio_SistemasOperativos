@@ -11,6 +11,8 @@ namespace SistemasOperativos_Obligatorio
         protected List<IObservador<Estado>> observadores;
         protected bool pausado = true;
 
+        protected TimeSpan intervaloActualizacion;
+
         public bool Pausado
         {
             get => pausado;
@@ -34,9 +36,10 @@ namespace SistemasOperativos_Obligatorio
 
         public event EventHandler PausadoChanged;
 
-        public PlanificadorBase()
+        public PlanificadorBase(TimeSpan intervaloActualizacion)
         {
             observadores = new List<IObservador<Estado>>();
+            this.intervaloActualizacion = intervaloActualizacion;
         }
 
         public void VerComoMueveLaCola(IObservador<Estado> observador)

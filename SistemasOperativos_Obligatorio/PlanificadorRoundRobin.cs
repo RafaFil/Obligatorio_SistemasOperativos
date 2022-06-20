@@ -16,8 +16,7 @@ namespace SistemasOperativos_Obligatorio
 
         private List<Proceso> procesos;
         private List<CPU> cpus;
-        private TimeSpan frecuenciaActualizacion;
-        private readonly TimeSpan TIEMPO_MAXIMO_CPU = new TimeSpan(0, 0, 5);
+        private readonly TimeSpan tiempoMaximoEnCPU;
 
         private Timer siguienteActualizacion;
 
@@ -26,14 +25,12 @@ namespace SistemasOperativos_Obligatorio
         /// </summary>
         /// <param name="procesos">los procesos a ejecutar</param>
         /// <param name="cpus">los CPU disponibles</param>
-        /// <param name="frecuenciaActualizacion">cada cuántos segundos se actualizará y notificará
-        /// el estado de los procesos</param>
-        public PlanificadorRoundRobin(List<Proceso> procesos, List<CPU> cpus, double frecuenciaActualizacion)
-            : base()
+        /// <param name="intervaloActualizacion">intervalo luego del cual se actualizará y
+        /// notificará el estado de los procesos</param>
+        public PlanificadorRoundRobin(List<Proceso> procesos, List<CPU> cpus, TimeSpan tiempoMaximoEnCPU, TimeSpan intervaloActualizacion)
+            : base(intervaloActualizacion)
         {
-            this.frecuenciaActualizacion = new TimeSpan(0, 0, 0, frecuenciaActualizacion.ParteEntera(),
-                frecuenciaActualizacion.ParteDecimal(3));
-
+            this.tiempoMaximoEnCPU = tiempoMaximoEnCPU;
             this.procesos = procesos;
             this.listaBloqueadosPorUsuario = new List<Proceso>();
             this.bloquesDeControl = new Dictionary<Proceso, BCP>();
@@ -135,12 +132,12 @@ namespace SistemasOperativos_Obligatorio
             if (p.intervaloES == TimeSpan.Zero
                 || p.tiempoCPUTranscurrido - p.tiempoCPUTranscurrido.Mod(p.intervaloES) + p.intervaloES > p.duracionCPU)
             {
-                quantum = new [] { TIEMPO_MAXIMO_CPU, (p.duracionCPU - p.tiempoCPUTranscurrido) / p.cpu!.Velocidad }.Min();
+                quantum = new [] { tiempoMaximoEnCPU, (p.duracionCPU - p.tiempoCPUTranscurrido) / p.cpu!.Velocidad }.Min();
             }
             // Si realizará alguna operación E/S antes de terminar
             else
             {
-                quantum = new[] { TIEMPO_MAXIMO_CPU,
+                quantum = new[] { tiempoMaximoEnCPU,
                     (p.intervaloES - p.tiempoCPUTranscurrido.Mod(p.intervaloES)) / p.cpu!.Velocidad }.Min();
             }
 
@@ -186,7 +183,7 @@ namespace SistemasOperativos_Obligatorio
                 return new TimeSpan[] { tiempoMinimoHastaES,
                     tiempoMinimoHastaFinalizacion,
                     tiempoMinimoHastaDesbloqueo,
-                    frecuenciaActualizacion }.Min();
+                    intervaloActualizacion }.Min();
             }
         }
 

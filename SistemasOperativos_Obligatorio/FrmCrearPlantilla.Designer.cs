@@ -196,6 +196,7 @@
             this.Controls.Add(this.cbxPlantillasCreadas);
             this.Controls.Add(this.chkUsarBase);
             this.Name = "FrmCrearPlantilla";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Crear plantilla de proceso";
             ((System.ComponentModel.ISupportInitialize)(this.numDuracionCPU)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numIntervaloES)).EndInit();

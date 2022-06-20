@@ -13,16 +13,19 @@ namespace SistemasOperativos_Obligatorio
     public partial class FrmSimulacion : Form, IObservador<PlanificadorBase.Estado>
     {
         private IPlanificador planificador;
-        private const double FRECUENCIA_ACTUALIZACION = 0.1;
+        private readonly TimeSpan intervaloActualizacion;
+        private readonly TimeSpan tiempoMaximoCPU;
         private List<Proceso> procesos;
         private List<CPU> cpus;
 
-        public FrmSimulacion(List<Proceso> procesos, List<CPU> cpus)
+        public FrmSimulacion(List<Proceso> procesos, List<CPU> cpus, TimeSpan tiempoMaximoCPU, TimeSpan intervaloActualizacion)
         {
             InitializeComponent();
 
             this.procesos = procesos;
             this.cpus = cpus;
+            this.intervaloActualizacion = intervaloActualizacion;
+            this.tiempoMaximoCPU = tiempoMaximoCPU;
             foreach (CPU cpu in cpus)
             {
                 grdProcesadores.Columns.Add(new DataGridViewTextBoxColumn());
@@ -38,7 +41,7 @@ namespace SistemasOperativos_Obligatorio
 
         private void InicializarPlanificador()
         {
-            planificador = new PlanificadorRoundRobin(procesos, cpus, FRECUENCIA_ACTUALIZACION);
+            planificador = new PlanificadorRoundRobin(procesos, cpus, tiempoMaximoCPU, intervaloActualizacion);
             planificador.PausadoChanged += Planificador_PausadoChanged;
             planificador.VerComoMueveLaCola(this);
             planificador.Pausado = false;
@@ -79,8 +82,16 @@ namespace SistemasOperativos_Obligatorio
 
             for (int i = 0; i < cpus.Count; i++)
             {
-                Color colorEstadoCPU = cpus[i].ProcesoActivo != null ? Color.Green : Color.Orange;
-                grdProcesadores.Rows[0].Cells[i].Style.BackColor = colorEstadoCPU;
+                if (cpus[i].ProcesoActivo != null)
+                {
+                    grdProcesadores.Rows[0].Cells[i].Style.BackColor = Color.Green;
+                    grdProcesadores.Rows[0].Cells[i].Value = "En uso";
+                }
+                else
+                {
+                    grdProcesadores.Rows[0].Cells[i].Style.BackColor = Color.Orange;
+                    grdProcesadores.Rows[0].Cells[i].Value = "Inactivo";
+                }
                 grdProcesadores.Rows[1].Cells[i].Value = cpus[i];
                 grdProcesadores.Rows[2].Cells[i].Value = cpus[i].ProcesoActivo;
             }
@@ -99,7 +110,7 @@ namespace SistemasOperativos_Obligatorio
                             var fila = new DataGridViewRow() { Tag = p };
                             fila.CreateCells(grdProcesosListos, p.id, p.esDeSo,
                                 p.nombre, p.prioridad, p.duracionCPU, p.duracionEs, p.intervaloES,
-                                p.PorcentajeCPUCompletado + "%");
+                                p.PorcentajeCPUCompletado + "%", "En ejecución");
                             grdProcesosListos.Rows.Add(fila);
 
                             grdProcesosListos.Rows[^1].Cells[colEstadoProcesoListo.Name]
@@ -112,7 +123,7 @@ namespace SistemasOperativos_Obligatorio
                         var fila = new DataGridViewRow() { Tag = p };
                         fila.CreateCells(grdProcesosListos, p.id, p.esDeSo,
                             p.nombre, p.prioridad, p.duracionCPU, p.duracionEs, p.intervaloES,
-                            p.PorcentajeCPUCompletado + "%");
+                            p.PorcentajeCPUCompletado + "%", "Listo");
                         grdProcesosListos.Rows.Add(fila);
 
                         grdProcesosListos.Rows[^1].Cells[colEstadoProcesoListo.Name]
@@ -124,7 +135,7 @@ namespace SistemasOperativos_Obligatorio
                         var fila = new DataGridViewRow() { Tag = p };
                         fila.CreateCells(grdProcesosListos, p.id, p.esDeSo,
                             p.nombre, p.prioridad, p.duracionCPU, p.duracionEs, p.intervaloES,
-                            p.PorcentajeCPUCompletado + "%");
+                            p.PorcentajeCPUCompletado + "%", "Finalizado");
                         grdProcesosListos.Rows.Add(fila);
 
                         grdProcesosListos.Rows[^1].Cells[colEstadoProcesoListo.Name]

@@ -42,16 +42,16 @@
             this.colEstadoProcesoListo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblProcesosListos = new System.Windows.Forms.Label();
             this.grdProcesosBloqueados = new System.Windows.Forms.DataGridView();
-            this.colIDProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombreProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMotiboProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colProcesoBloqueadoCompletado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblProcesosBloqueados = new System.Windows.Forms.Label();
             this.btnReanudar = new System.Windows.Forms.Button();
             this.btnDetener = new System.Windows.Forms.Button();
             this.btnBloquear = new System.Windows.Forms.Button();
             this.btnDesbloquear = new System.Windows.Forms.Button();
             this.btnReiniciar = new System.Windows.Forms.Button();
+            this.colIDProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colNombreProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMotiboProcesoBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colProcesoBloqueadoCompletado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesadores)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesosListos)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesosBloqueados)).BeginInit();
@@ -113,7 +113,7 @@
             this.grdProcesosListos.RowHeadersVisible = false;
             this.grdProcesosListos.RowTemplate.Height = 25;
             this.grdProcesosListos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdProcesosListos.Size = new System.Drawing.Size(493, 299);
+            this.grdProcesosListos.Size = new System.Drawing.Size(429, 299);
             this.grdProcesosListos.TabIndex = 1;
             this.grdProcesosListos.SelectionChanged += new System.EventHandler(this.grdProcesosListos_SelectionChanged);
             // 
@@ -197,46 +197,22 @@
             this.colNombreProcesoBloqueado,
             this.colMotiboProcesoBloqueado,
             this.colProcesoBloqueadoCompletado});
-            this.grdProcesosBloqueados.Location = new System.Drawing.Point(511, 139);
+            this.grdProcesosBloqueados.Location = new System.Drawing.Point(447, 139);
             this.grdProcesosBloqueados.MultiSelect = false;
             this.grdProcesosBloqueados.Name = "grdProcesosBloqueados";
             this.grdProcesosBloqueados.ReadOnly = true;
             this.grdProcesosBloqueados.RowHeadersVisible = false;
             this.grdProcesosBloqueados.RowTemplate.Height = 25;
             this.grdProcesosBloqueados.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdProcesosBloqueados.Size = new System.Drawing.Size(277, 146);
+            this.grdProcesosBloqueados.Size = new System.Drawing.Size(341, 146);
             this.grdProcesosBloqueados.TabIndex = 3;
             this.grdProcesosBloqueados.SelectionChanged += new System.EventHandler(this.grdProcesosBloqueados_SelectionChanged);
-            // 
-            // colIDProcesoBloqueado
-            // 
-            this.colIDProcesoBloqueado.HeaderText = "ID";
-            this.colIDProcesoBloqueado.Name = "colIDProcesoBloqueado";
-            this.colIDProcesoBloqueado.ReadOnly = true;
-            // 
-            // colNombreProcesoBloqueado
-            // 
-            this.colNombreProcesoBloqueado.HeaderText = "Nombre";
-            this.colNombreProcesoBloqueado.Name = "colNombreProcesoBloqueado";
-            this.colNombreProcesoBloqueado.ReadOnly = true;
-            // 
-            // colMotiboProcesoBloqueado
-            // 
-            this.colMotiboProcesoBloqueado.HeaderText = "Motivo";
-            this.colMotiboProcesoBloqueado.Name = "colMotiboProcesoBloqueado";
-            this.colMotiboProcesoBloqueado.ReadOnly = true;
-            // 
-            // colProcesoBloqueadoCompletado
-            // 
-            this.colProcesoBloqueadoCompletado.HeaderText = "Completado";
-            this.colProcesoBloqueadoCompletado.Name = "colProcesoBloqueadoCompletado";
-            this.colProcesoBloqueadoCompletado.ReadOnly = true;
             // 
             // lblProcesosBloqueados
             // 
             this.lblProcesosBloqueados.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblProcesosBloqueados.AutoSize = true;
-            this.lblProcesosBloqueados.Location = new System.Drawing.Point(511, 121);
+            this.lblProcesosBloqueados.Location = new System.Drawing.Point(447, 121);
             this.lblProcesosBloqueados.Name = "lblProcesosBloqueados";
             this.lblProcesosBloqueados.Size = new System.Drawing.Size(119, 15);
             this.lblProcesosBloqueados.TabIndex = 4;
@@ -245,7 +221,7 @@
             // btnReanudar
             // 
             this.btnReanudar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReanudar.Location = new System.Drawing.Point(550, 402);
+            this.btnReanudar.Location = new System.Drawing.Point(469, 402);
             this.btnReanudar.Name = "btnReanudar";
             this.btnReanudar.Size = new System.Drawing.Size(97, 36);
             this.btnReanudar.TabIndex = 5;
@@ -268,9 +244,9 @@
             // 
             this.btnBloquear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBloquear.Enabled = false;
-            this.btnBloquear.Location = new System.Drawing.Point(550, 317);
+            this.btnBloquear.Location = new System.Drawing.Point(469, 317);
             this.btnBloquear.Name = "btnBloquear";
-            this.btnBloquear.Size = new System.Drawing.Size(215, 23);
+            this.btnBloquear.Size = new System.Drawing.Size(296, 23);
             this.btnBloquear.TabIndex = 7;
             this.btnBloquear.Text = "Bloquear proceso";
             this.btnBloquear.UseVisualStyleBackColor = true;
@@ -280,9 +256,9 @@
             // 
             this.btnDesbloquear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDesbloquear.Enabled = false;
-            this.btnDesbloquear.Location = new System.Drawing.Point(550, 346);
+            this.btnDesbloquear.Location = new System.Drawing.Point(469, 346);
             this.btnDesbloquear.Name = "btnDesbloquear";
-            this.btnDesbloquear.Size = new System.Drawing.Size(215, 23);
+            this.btnDesbloquear.Size = new System.Drawing.Size(296, 23);
             this.btnDesbloquear.TabIndex = 8;
             this.btnDesbloquear.Text = "Desbloquear proceso";
             this.btnDesbloquear.UseVisualStyleBackColor = true;
@@ -291,14 +267,39 @@
             // btnReiniciar
             // 
             this.btnReiniciar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReiniciar.Location = new System.Drawing.Point(550, 402);
+            this.btnReiniciar.Location = new System.Drawing.Point(469, 402);
             this.btnReiniciar.Name = "btnReiniciar";
-            this.btnReiniciar.Size = new System.Drawing.Size(215, 36);
+            this.btnReiniciar.Size = new System.Drawing.Size(296, 36);
             this.btnReiniciar.TabIndex = 9;
             this.btnReiniciar.Text = "Reiniciar simulación";
             this.btnReiniciar.UseVisualStyleBackColor = true;
             this.btnReiniciar.Visible = false;
             this.btnReiniciar.Click += new System.EventHandler(this.btnReiniciar_Click);
+            // 
+            // colIDProcesoBloqueado
+            // 
+            this.colIDProcesoBloqueado.FillWeight = 50F;
+            this.colIDProcesoBloqueado.HeaderText = "ID";
+            this.colIDProcesoBloqueado.Name = "colIDProcesoBloqueado";
+            this.colIDProcesoBloqueado.ReadOnly = true;
+            // 
+            // colNombreProcesoBloqueado
+            // 
+            this.colNombreProcesoBloqueado.HeaderText = "Nombre";
+            this.colNombreProcesoBloqueado.Name = "colNombreProcesoBloqueado";
+            this.colNombreProcesoBloqueado.ReadOnly = true;
+            // 
+            // colMotiboProcesoBloqueado
+            // 
+            this.colMotiboProcesoBloqueado.HeaderText = "Motivo";
+            this.colMotiboProcesoBloqueado.Name = "colMotiboProcesoBloqueado";
+            this.colMotiboProcesoBloqueado.ReadOnly = true;
+            // 
+            // colProcesoBloqueadoCompletado
+            // 
+            this.colProcesoBloqueadoCompletado.HeaderText = "Completado";
+            this.colProcesoBloqueadoCompletado.Name = "colProcesoBloqueadoCompletado";
+            this.colProcesoBloqueadoCompletado.ReadOnly = true;
             // 
             // FrmSimulacion
             // 
@@ -335,10 +336,6 @@
         private System.Windows.Forms.Label lblProcesosListos;
         private System.Windows.Forms.DataGridView grdProcesosBloqueados;
         private System.Windows.Forms.Label lblProcesosBloqueados;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colIDProcesoBloqueado;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombreProcesoBloqueado;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colMotiboProcesoBloqueado;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colProcesoBloqueadoCompletado;
         private System.Windows.Forms.Button btnReanudar;
         private System.Windows.Forms.Button btnDetener;
         private System.Windows.Forms.Button btnBloquear;
@@ -353,5 +350,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colCompletadoProcesoListo;
         private System.Windows.Forms.DataGridViewTextBoxColumn colEstadoProcesoListo;
         private System.Windows.Forms.Button btnReiniciar;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colIDProcesoBloqueado;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNombreProcesoBloqueado;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMotiboProcesoBloqueado;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colProcesoBloqueadoCompletado;
     }
 }

@@ -26,6 +26,8 @@ namespace SistemasOperativos_Obligatorio
             procesosIngresados = new List<Proceso>();
             cpusDisponibles = new List<CPU>();
             txtPrioridadProceso.Text = tckPrioridadProceso.Value.ToString();
+            txtTiempoMaximoCPU.Text = AjustarTiempoMaximoCPU(tckTiempoMaximoCPU.Value).ToString();
+            txtIntervaloActualizacion.Text = AjustarIntervaloActualizacion(tckIntervaloActualizacion.Value).ToString();
             txtVelocidadCPU.Text = VelocidadTrackBarToString(tckVelocidadCPU.Value);
             numCantidadCPUs.Maximum = MAXIMO_CPUS;
         }
@@ -38,6 +40,16 @@ namespace SistemasOperativos_Obligatorio
         private string VelocidadDoubleToString(double velocidad)
         {
             return (Math.Round(velocidad * 100)).ToString() + "%";
+        }
+
+        private int AjustarIntervaloActualizacion(int intervaloActualizacion)
+        {
+            return 100 + intervaloActualizacion;
+        }
+
+        private int AjustarTiempoMaximoCPU(int tiempoMaximoCPU)
+        {
+            return 100 + tiempoMaximoCPU;
         }
 
         private void btnCrearPlantilla_Click(object sender, EventArgs e)
@@ -156,9 +168,21 @@ namespace SistemasOperativos_Obligatorio
 
         private void btnIniciarSimulacion_Click(object sender, EventArgs e)
         {
-            FrmSimulacion frm = new FrmSimulacion(procesosIngresados, cpusDisponibles);
+            TimeSpan intervaloActualizacion = TimeSpan.FromMilliseconds(AjustarIntervaloActualizacion(tckIntervaloActualizacion.Value));
+            TimeSpan tiempoMaximoCPU = TimeSpan.FromMilliseconds(AjustarTiempoMaximoCPU(tckTiempoMaximoCPU.Value));
+            FrmSimulacion frm = new FrmSimulacion(procesosIngresados, cpusDisponibles, tiempoMaximoCPU, intervaloActualizacion);
             frm.ShowDialog();
             LimpiarSimulacion();
+        }
+
+        private void tckIntervaloActualizacion_Scroll(object sender, EventArgs e)
+        {
+            txtIntervaloActualizacion.Text = AjustarIntervaloActualizacion(tckIntervaloActualizacion.Value).ToString();
+        }
+
+        private void tckTiempoMaximoCPU_Scroll(object sender, EventArgs e)
+        {
+            txtTiempoMaximoCPU.Text = AjustarTiempoMaximoCPU(tckTiempoMaximoCPU.Value).ToString();
         }
     }
 }

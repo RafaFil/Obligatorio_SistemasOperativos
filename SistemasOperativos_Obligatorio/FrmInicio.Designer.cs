@@ -62,6 +62,12 @@
             this.colIntervaloES = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPrioridad = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colEsDeSO = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.tckIntervaloActualizacion = new System.Windows.Forms.TrackBar();
+            this.lblIntervaloActualizacion = new System.Windows.Forms.Label();
+            this.txtIntervaloActualizacion = new System.Windows.Forms.TextBox();
+            this.lblTiempoMaximoCPU = new System.Windows.Forms.Label();
+            this.tckTiempoMaximoCPU = new System.Windows.Forms.TrackBar();
+            this.txtTiempoMaximoCPU = new System.Windows.Forms.TextBox();
             this.grpAgregarProcesos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tckPrioridadProceso)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCantidadProcesos)).BeginInit();
@@ -70,6 +76,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tckVelocidadCPU)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdCPUs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tckIntervaloActualizacion)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tckTiempoMaximoCPU)).BeginInit();
             this.SuspendLayout();
             // 
             // grpAgregarProcesos
@@ -278,7 +286,7 @@
             // 
             this.btnIniciarSimulacion.BackColor = System.Drawing.Color.PaleGreen;
             this.btnIniciarSimulacion.Enabled = false;
-            this.btnIniciarSimulacion.Location = new System.Drawing.Point(748, 459);
+            this.btnIniciarSimulacion.Location = new System.Drawing.Point(750, 581);
             this.btnIniciarSimulacion.Name = "btnIniciarSimulacion";
             this.btnIniciarSimulacion.Size = new System.Drawing.Size(100, 33);
             this.btnIniciarSimulacion.TabIndex = 1;
@@ -289,7 +297,7 @@
             // btnLimpiarSimulacion
             // 
             this.btnLimpiarSimulacion.BackColor = System.Drawing.Color.LightCoral;
-            this.btnLimpiarSimulacion.Location = new System.Drawing.Point(639, 459);
+            this.btnLimpiarSimulacion.Location = new System.Drawing.Point(641, 581);
             this.btnLimpiarSimulacion.Name = "btnLimpiarSimulacion";
             this.btnLimpiarSimulacion.Size = new System.Drawing.Size(100, 33);
             this.btnLimpiarSimulacion.TabIndex = 0;
@@ -373,7 +381,7 @@
             this.grdProcesos.RowHeadersVisible = false;
             this.grdProcesos.RowTemplate.Height = 25;
             this.grdProcesos.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.grdProcesos.Size = new System.Drawing.Size(607, 285);
+            this.grdProcesos.Size = new System.Drawing.Size(607, 407);
             this.grdProcesos.TabIndex = 4;
             this.grdProcesos.TabStop = false;
             // 
@@ -421,11 +429,76 @@
             this.colEsDeSO.Name = "colEsDeSO";
             this.colEsDeSO.ReadOnly = true;
             // 
+            // tckIntervaloActualizacion
+            // 
+            this.tckIntervaloActualizacion.LargeChange = 500;
+            this.tckIntervaloActualizacion.Location = new System.Drawing.Point(641, 530);
+            this.tckIntervaloActualizacion.Maximum = 4900;
+            this.tckIntervaloActualizacion.Name = "tckIntervaloActualizacion";
+            this.tckIntervaloActualizacion.Size = new System.Drawing.Size(137, 45);
+            this.tckIntervaloActualizacion.SmallChange = 100;
+            this.tckIntervaloActualizacion.TabIndex = 8;
+            this.tckIntervaloActualizacion.TickFrequency = 500;
+            this.tckIntervaloActualizacion.Scroll += new System.EventHandler(this.tckIntervaloActualizacion_Scroll);
+            // 
+            // lblIntervaloActualizacion
+            // 
+            this.lblIntervaloActualizacion.AutoSize = true;
+            this.lblIntervaloActualizacion.Location = new System.Drawing.Point(641, 512);
+            this.lblIntervaloActualizacion.Name = "lblIntervaloActualizacion";
+            this.lblIntervaloActualizacion.Size = new System.Drawing.Size(168, 15);
+            this.lblIntervaloActualizacion.TabIndex = 9;
+            this.lblIntervaloActualizacion.Text = "Intervalo de actualización (ms)";
+            // 
+            // txtIntervaloActualizacion
+            // 
+            this.txtIntervaloActualizacion.Enabled = false;
+            this.txtIntervaloActualizacion.Location = new System.Drawing.Point(784, 530);
+            this.txtIntervaloActualizacion.Name = "txtIntervaloActualizacion";
+            this.txtIntervaloActualizacion.Size = new System.Drawing.Size(66, 23);
+            this.txtIntervaloActualizacion.TabIndex = 10;
+            // 
+            // lblTiempoMaximoCPU
+            // 
+            this.lblTiempoMaximoCPU.AutoSize = true;
+            this.lblTiempoMaximoCPU.Location = new System.Drawing.Point(639, 449);
+            this.lblTiempoMaximoCPU.Name = "lblTiempoMaximoCPU";
+            this.lblTiempoMaximoCPU.Size = new System.Drawing.Size(163, 15);
+            this.lblTiempoMaximoCPU.TabIndex = 11;
+            this.lblTiempoMaximoCPU.Text = "Tiempo máximo en CPU (ms)";
+            // 
+            // tckTiempoMaximoCPU
+            // 
+            this.tckTiempoMaximoCPU.LargeChange = 500;
+            this.tckTiempoMaximoCPU.Location = new System.Drawing.Point(639, 467);
+            this.tckTiempoMaximoCPU.Maximum = 4900;
+            this.tckTiempoMaximoCPU.Name = "tckTiempoMaximoCPU";
+            this.tckTiempoMaximoCPU.Size = new System.Drawing.Size(139, 45);
+            this.tckTiempoMaximoCPU.SmallChange = 100;
+            this.tckTiempoMaximoCPU.TabIndex = 12;
+            this.tckTiempoMaximoCPU.TickFrequency = 500;
+            this.tckTiempoMaximoCPU.Value = 4900;
+            this.tckTiempoMaximoCPU.Scroll += new System.EventHandler(this.tckTiempoMaximoCPU_Scroll);
+            // 
+            // txtTiempoMaximoCPU
+            // 
+            this.txtTiempoMaximoCPU.Enabled = false;
+            this.txtTiempoMaximoCPU.Location = new System.Drawing.Point(784, 467);
+            this.txtTiempoMaximoCPU.Name = "txtTiempoMaximoCPU";
+            this.txtTiempoMaximoCPU.Size = new System.Drawing.Size(66, 23);
+            this.txtTiempoMaximoCPU.TabIndex = 13;
+            // 
             // FrmInicio
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(860, 504);
+            this.ClientSize = new System.Drawing.Size(860, 626);
+            this.Controls.Add(this.txtTiempoMaximoCPU);
+            this.Controls.Add(this.tckTiempoMaximoCPU);
+            this.Controls.Add(this.lblTiempoMaximoCPU);
+            this.Controls.Add(this.txtIntervaloActualizacion);
+            this.Controls.Add(this.lblIntervaloActualizacion);
+            this.Controls.Add(this.tckIntervaloActualizacion);
             this.Controls.Add(this.lblCPUsIngresados);
             this.Controls.Add(this.lblProcesosIngresados);
             this.Controls.Add(this.grdCPUs);
@@ -435,6 +508,7 @@
             this.Controls.Add(this.grpCPUs);
             this.Controls.Add(this.grpAgregarProcesos);
             this.Name = "FrmInicio";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Configuración de simulación";
             this.grpAgregarProcesos.ResumeLayout(false);
             this.grpAgregarProcesos.PerformLayout();
@@ -446,6 +520,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.tckVelocidadCPU)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdCPUs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.grdProcesos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tckIntervaloActualizacion)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tckTiempoMaximoCPU)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -487,5 +563,11 @@
         private System.Windows.Forms.DataGridViewCheckBoxColumn colEsDeSO;
         private System.Windows.Forms.DataGridViewTextBoxColumn colIDCPU;
         private System.Windows.Forms.DataGridViewTextBoxColumn colVelocidad;
+        private System.Windows.Forms.TrackBar tckIntervaloActualizacion;
+        private System.Windows.Forms.Label lblIntervaloActualizacion;
+        private System.Windows.Forms.TextBox txtIntervaloActualizacion;
+        private System.Windows.Forms.Label lblTiempoMaximoCPU;
+        private System.Windows.Forms.TrackBar tckTiempoMaximoCPU;
+        private System.Windows.Forms.TextBox txtTiempoMaximoCPU;
     }
 }
